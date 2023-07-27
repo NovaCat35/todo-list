@@ -1,38 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>To-Do List</title>
-</head>
-<body>
-   <header>
-      <h1>ToDo</h1>
-      <div>
-         <span></span>
-         <span></span>
-         <span></span>
-      </div>
-   </header>
-   <main>
-      <nav class="side-nav">
-         <div class="all-navTab navtab">All</div>
-         <div class="today-navTab navtab">Today</div>
-         <div class="upcoming-navTab navtab">Upcoming</div>
-         <div class="completed-navTab navtab">Completed</div>
-         <div class="project-container">
-            <div class="project-header">
-               <h2>PROJECTS</h2>
-               <img src="../src/assets/plus.svg" alt="add-icon">
-            </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>To-Do List</title>
+	</head>
+	<body>
+		<header>
+			<h1>ToDo</h1>
+			<div class="container1">
+				<div class="search-container">
+					<img src="../src/assets/magnify.svg" class="search-btn" alt="" />
+					<input type="search" class="search-bar-input" placeholder="Search" />
+				</div>
+			</div>
+			<div class="container2" tabindex="0">
+				<div class="search-container">
+					<input type="search" class="search-bar-input" placeholder="Search" />
+					<img src="../src/assets/magnify.svg" class="search-btn" alt="" />
+				</div>
+			</div>
+			<div class="hamburger">
+				<span class="bar"></span>
+				<span class="bar"></span>
+				<span class="bar"></span>
+			</div>
+		</header>
+		<main>
+         <div class="modal-container">
+            <h2>Add Project</h2>
+            <form id="modal-form" action="">
+               <label for="project-name">Name:</label>
+               <input type="text" name="" id="project-name" required>
+               <div class="modal-btn-container">
+                  <button type="submit" class="modal-add-btn">Add</button>
+                  <button class="modal-cancel-btn">Cancel</button>
+               </div>
+            </form>
          </div>
-      </nav>
-      <div class="main-content"></div>
-   </main>
-   <footer>
-      <p>Made by NovaCat35 | 2023</p>
-      <a href=""><img src="../src/assets/github.svg" alt="github-svg"></a>
-   </footer>
-   <script src="main.js"></script>
-</body>
+			<nav class="side-nav">
+				<div class="all-navTab navtab">All</div>
+				<div class="today-navTab navtab">Today</div>
+				<div class="upcoming-navTab navtab">Upcoming</div>
+				<div class="completed-navTab navtab">Completed</div>
+				<div class="project-container">
+					<div class="project-header">
+						<h2>PROJECTS</h2>
+						<img src="../src/assets/plus.svg" alt="add-icon" class="add-project-btn" />
+					</div>
+				</div>
+			</nav>
+			<div class="main-content"></div>
+		</main>
+		<footer>
+			<p>Made by NovaCat35 | 2023</p>
+			<a href=""><img src="../src/assets/github.svg" alt="github-svg" /></a>
+		</footer>
+		<script src="main.js"></script>
+	</body>
 </html>

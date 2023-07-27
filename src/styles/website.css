@@ -1,82 +1,222 @@
+:root {
+}
 * {
-   box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-html, body {
-   margin: 0;
-   min-height: 100vh;
+html,
+body {
+	margin: 0;
+	min-height: 100vh;
 }
 body {
-   display: flex;
-   flex-direction: column;
-}
-/*** HEADER ***/
-header {
-   display: flex;
-   align-items: center;
-   background-color: rgb(205, 96, 74);
-   width: 100vw;
-   padding: 20px 20px;
-}
-h1 {
-   margin: 0;
+	display: flex;
+	flex-direction: column;
 }
 
+/* ********************** */
+/*** HEADER ***/
+header {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	background-color: rgb(205, 96, 74);
+	width: 100vw;
+	padding: 20px 20px;
+}
+h1 {
+	margin: 0;
+}
+/** Hamburger **/
+.hamburger {
+	margin-left: auto;
+	display: block;
+	cursor: pointer;
+}
+.hamburger .bar {
+	display: block;
+	background-color: white;
+	width: 25px;
+	height: 3px;
+	margin: 5px;
+	transition: all 0.5s ease-in-out;
+}
+.hamburger.active .bar:nth-child(1) {
+	transform: translateY(8px) rotate(45deg);
+}
+.hamburger.active .bar:nth-child(2) {
+	opacity: 0;
+}
+.hamburger.active .bar:nth-child(3) {
+	transform: translateY(-8px) rotate(-45deg);
+}
+/** Search Bar AREA **/
+.search-container {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px;
+	background-color: white;
+	border-radius: 15px;
+}
+.search-container img {
+	width: 30px;
+}
+.search-bar-input {
+	outline: none;
+	padding: 0;
+	font-size: 1.1rem;
+	margin-left: 5px;
+	width: 100%;
+	border: none;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	line-height: 30px;
+}
+/* Disable for Mobile view */
+.container1 {
+	display: none;
+}
+.container2 {
+	display: block;
+	position: relative;
+	width: 40px;
+	height: 40px;
+}
+/* 
+ * All the color goes into the search-container. 
+ * We will use the container as the background and then the search-bar-input
+ * to expand out and in when the container2 is focused-in.
+ */
+.container2 .search-container {
+	position: absolute;
+	border-radius: 50px;
+}
+.container2 .search-bar-input {
+	margin: 0;
+	width: 0;
+	transition: all 0.3s ease-in-out;
+}
+.container2 .search-button {
+	height: 25px;
+	width: 25px;
+	border-radius: 50%;
+}
+/* 
+* To prevent container from shrinking when click again, 
+* we need to add .search-bar-input's focus. Also the padding is so the blinking
+* "|" line wont disappear into the borders
+*/
+.container2:focus .search-bar-input,
+.container2 .search-bar-input:focus,
+.container2 .search-bar-input:not(:placeholder-shown) {
+	padding: 0 6px;
+	visibility: visible;
+	width: 37vw;
+}
+
+/* ********************** */
 /*** MAIN ***/
 main {
-   flex: 1;
-   display: flex;
+	flex: 1;
+	display: flex;
 }
 /* NAVBAR */
 main .side-nav {
-   padding-top: 20px;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   background-color: rgb(221, 221, 204);
-   width: 300px;
-   overflow-y: auto;
+	padding-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgb(221, 221, 204);
+	width: 0;
+	overflow-y: auto;
+	transition: all 0.3s ease-in-out;
+}
+main .side-nav.active {
+	width: 80vw;
 }
 .navtab {
-   margin: 10px 10px;
-   border: 1px solid black;
-   border-radius: 10px;
-   padding: 10px;
-   width: 80%;
+	cursor: pointer;
+	margin: 10px 10px;
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 10px;
+	width: 80%;
 }
 .project-header {
-   display: flex;
-   align-items: center;
-   gap: 10px;
-   width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
 }
-.project-header img {
-   border: 1px solid black;
-   border-radius: 50%;
-   width: 30px;
-   height: 30px;
+.project-header .add-project-btn {
+	cursor: pointer;
+	border: 1px solid black;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	transition: all 0.5s ease-in-out;
+}
+.project-header .add-project-btn:hover {
+	transform: rotate(360deg);
+}
+/* MODAL */
+.modal-container {
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   position: absolute;
+   background-color: rgb(202, 202, 196);
+   padding: 20px;
+}
+.modal-btn-container {
+   padding: 20px;
 }
 /* MAIN Container */
 main .main-content {
-   width: 100%;
-   background-color: rgb(226, 234, 232);
+	background-color: rgb(226, 234, 232);
 }
 
 
-
+/* ********************** */
 /*** FOOTER ***/
 footer {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   gap: 10px;
-   width: 100vw;
-   background-color: blanchedalmond;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	width: 100vw;
+	background-color: blanchedalmond;
 }
 footer img {
-   width: 30px;
-   transition: all .3s ease-in-out;
+	width: 30px;
+	transition: all 0.5s ease-in-out;
 }
 footer img:hover {
-   transform: rotate(360);
+	transform: rotate(360deg);
+}
+
+@media screen and (min-width: 600px) {
+	/* HEADER */
+	header {
+		gap: 30px;
+	}
+	.search-container {
+		width: 30vw;
+	}
+	.container1 {
+		display: flex;
+	}
+	.container2 {
+		display: none;
+	}
+	.hamburger {
+		display: none;
+	}
+	/* MAIN */
+	main .side-nav, main .side-nav.active {
+		width: 300px;
+	}
 }
