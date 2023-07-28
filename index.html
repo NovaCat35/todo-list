@@ -27,14 +27,16 @@
 			</div>
 		</header>
 		<main>
-         <div class="modal-container">
-            <h2>Add Project</h2>
+         <div class="project-modal-container hidden">
+            <header>
+               <h2>New Project</h2>
+            </header>
             <form id="modal-form" action="">
                <label for="project-name">Name:</label>
-               <input type="text" name="" id="project-name" required>
+               <input type="text" name="projectName" id="project-name" required>
                <div class="modal-btn-container">
-                  <button type="submit" class="modal-add-btn">Add</button>
-                  <button class="modal-cancel-btn">Cancel</button>
+                  <button type="submit" class="modal-add-project-btn">Add</button>
+                  <button type="button" class="modal-cancel-btn">Cancel</button>
                </div>
             </form>
          </div>
@@ -46,7 +48,7 @@
 				<div class="project-container">
 					<div class="project-header">
 						<h2>PROJECTS</h2>
-						<img src="../src/assets/plus.svg" alt="add-icon" class="add-project-btn" />
+						<img src="../src/assets/plus.svg" alt="add-icon" class="new-project-btn" />
 					</div>
 				</div>
 			</nav>
