@@ -151,7 +151,7 @@ main .side-nav.active {
 	gap: 10px;
 	width: 100%;
 }
-.project-header .add-project-btn {
+.project-header .new-project-btn {
 	cursor: pointer;
 	border: 1px solid black;
 	border-radius: 50%;
@@ -159,20 +159,8 @@ main .side-nav.active {
 	height: 30px;
 	transition: all 0.5s ease-in-out;
 }
-.project-header .add-project-btn:hover {
+.project-header .new-project-btn:hover {
 	transform: rotate(360deg);
-}
-/* MODAL */
-.modal-container {
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   position: absolute;
-   background-color: rgb(202, 202, 196);
-   padding: 20px;
-}
-.modal-btn-container {
-   padding: 20px;
 }
 /* MAIN Container */
 main .main-content {
