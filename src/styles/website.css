@@ -1,4 +1,7 @@
 :root {
+	--nav-bar-background: rgb(237, 237, 236);
+	--top-nav-background: rgb(229, 116, 94);
+	--footer-background: rgb(219, 219, 219);
 }
 * {
 	box-sizing: border-box;
@@ -20,7 +23,7 @@ header {
 	display: flex;
 	align-items: center;
 	gap: 20px;
-	background-color: rgb(205, 96, 74);
+	background-color: var(--top-nav-background);
 	width: 100vw;
 	padding: 20px 20px;
 }
@@ -129,7 +132,7 @@ main .side-nav {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: rgb(221, 221, 204);
+	background-color: var(--nav-bar-background);
 	width: 0;
 	overflow-y: auto;
 	transition: all 0.3s ease-in-out;
@@ -196,9 +199,33 @@ main .side-nav.active {
 /* MAIN Container */
 main .main-content {
 	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	padding: 30px;
+	background-color: rgb(255, 255, 255);
+}
+.taskInfoHeader {
+	width: 100%;
+	height: 30px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.task-list {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 	justify-content: center;
 	width: 100%;
-	background-color: rgb(226, 234, 232);
+}
+.addTaskBtn {
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+}
+.addTaskBtn img {
+	width: 30px;
 }
 
 
@@ -210,7 +237,8 @@ footer {
 	align-items: center;
 	gap: 10px;
 	width: 100vw;
-	background-color: blanchedalmond;
+	height: 40px;
+	background-color: var(--footer-background);
 }
 footer img {
 	width: 30px;
