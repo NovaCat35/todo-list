@@ -6,6 +6,7 @@
 		<title>To-Do List</title>
 	</head>
 	<body>
+		<!-- TOP NAVIGATION BAR -->
 		<header>
 			<h1>ToDo</h1>
 			<div class="container1">
@@ -27,33 +28,42 @@
 			</div>
 		</header>
 		<main>
-         <div class="project-modal-container hidden">
-            <header>
-               <h2>New Project</h2>
-            </header>
-            <form id="modal-form" action="">
-               <label for="project-name">Name:</label>
-               <input type="text" name="projectName" id="project-name" required>
-               <div class="modal-btn-container">
-                  <button type="submit" class="modal-add-project-btn">Add</button>
-                  <button type="button" class="modal-cancel-btn">Cancel</button>
-               </div>
-            </form>
-         </div>
+			<!-- SIDEBAR -->
 			<nav class="side-nav">
-				<div class="all-navTab navtab">All</div>
-				<div class="today-navTab navtab">Today</div>
-				<div class="upcoming-navTab navtab">Upcoming</div>
-				<div class="completed-navTab navtab">Completed</div>
-				<div class="project-container">
-					<div class="project-header">
-						<h2>PROJECTS</h2>
-						<img src="../src/assets/plus.svg" alt="add-icon" class="new-project-btn" />
-					</div>
+				<div class="all-navTab navtab" id ="All">All</div>
+				<div class="today-navTab navtab" id="Today">Today</div>
+				<div class="upcoming-navTab navtab" id="Upcoming">Upcoming</div>
+				<div class="completed-navTab navtab" id="Completed">Completed</div>
+				<div class="project-header">
+					<h2>PROJECTS</h2>
+					<img src="../src/assets/plus.svg" alt="add-icon" class="new-project-btn" />
 				</div>
+				<div class="project-container"></div>
 			</nav>
-			<div class="main-content"></div>
+			<!-- CONTENT AREA -->
+			<div class="main-content">
+				<h1 class="main-title"></h1>
+				<div class="task-list">
+					
+				</div>
+			</div>
 		</main>
+		<!-- MODALS -->
+		<div class="project-modal-background hidden">
+			<div class="project-modal-container">
+				<header>
+					<h2 class="project-modal-header">New Project|Edit Project</h2>
+				</header>
+				<form id="modal-form" action="">
+					<label for="project-name">Name:</label>
+					<input type="text" name="projectName" id="project-name" required>
+					<div class="modal-btn-container">
+						<button type="submit" class="modal-project-btn">Add|Edit</button>
+						<button type="button" class="modal-cancel-btn">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
 		<footer>
 			<p>Made by NovaCat35 | 2023</p>
 			<a href=""><img src="../src/assets/github.svg" alt="github-svg" /></a>

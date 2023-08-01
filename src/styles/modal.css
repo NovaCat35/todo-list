@@ -2,6 +2,14 @@
 .hidden {
    display: none;
 }
+.project-modal-background {
+   position: absolute;
+   top: 0;
+   height: 100%;
+   width: 100%;
+   background-color: rgb(0,0,0, 0.5);
+   z-index: 1;
+}
 .project-modal-container {
    top: 50%;
    left: 50%;
@@ -9,7 +17,6 @@
    position: absolute;
    background-color: rgb(202, 202, 196);
    width: clamp(300px, 80vw, 600px);
-   z-index: 1;
    border-radius: 10px;
 }
 .modal-btn-container {

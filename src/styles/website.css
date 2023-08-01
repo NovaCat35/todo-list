@@ -145,11 +145,20 @@ main .side-nav.active {
 	padding: 10px;
 	width: 80%;
 }
+/* Project SideNav links */
 .project-header {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	gap: 10px;
 	width: 100%;
+}
+.project-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
 }
 .project-header .new-project-btn {
 	cursor: pointer;
@@ -162,8 +171,33 @@ main .side-nav.active {
 .project-header .new-project-btn:hover {
 	transform: rotate(360deg);
 }
+.project-link-div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1.2rem;
+	border: 1px solid black;
+	border-radius: 10px;
+	width: 80%;
+	height: 30px;
+	padding: 5px;
+}
+.project-link-div p {
+	font-size: 1.2rem;
+}
+.project-link-div .editIcon {
+	width: 23px;
+}
+.project-link-div .deleteIcon{
+	position: relative; 
+	top: 2px;
+	width: 23px;
+}
 /* MAIN Container */
 main .main-content {
+	display: flex;
+	justify-content: center;
+	width: 100%;
 	background-color: rgb(226, 234, 232);
 }
 
