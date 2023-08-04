@@ -1,7 +1,7 @@
 import deleteSvg from "./assets/delete-icon.svg";
 import editSvg from "./assets/edit-icon.svg";
 import handleModalRequest from "./modalHandler.js";
-import displayMainInfo from "./mainPageController.js"
+import {displayMainInfo} from "./mainPageController.js"
 
 let projectList = [];
 const projectContainer = document.querySelector(".project-container");
@@ -31,6 +31,7 @@ function openProjectModal(projectType) {
 function createProjectElement(title) {
 	const projectNavLink = createElement("div", "project-link-div");
 	projectNavLink.setAttribute("data-project-id", title);
+	projectNavLink.setAttribute("tabindex", 0);
 
 	const projectTitle = createElement("p", "project-title");
 	projectTitle.textContent = title;

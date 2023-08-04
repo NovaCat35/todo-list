@@ -30,10 +30,10 @@
 		<main>
 			<!-- SIDEBAR -->
 			<nav class="side-nav">
-				<div class="all-navTab navtab" id ="All">All</div>
-				<div class="today-navTab navtab" id="Today">Today</div>
-				<div class="upcoming-navTab navtab" id="Upcoming">Upcoming</div>
-				<div class="completed-navTab navtab" id="Completed">Completed</div>
+				<div class="all-navTab navtab" id ="All" tabindex="0">All</div>
+				<div class="today-navTab navtab" id="Today" tabindex="0">Today</div>
+				<div class="upcoming-navTab navtab" id="Upcoming" tabindex="0">Upcoming</div>
+				<div class="completed-navTab navtab" id="Completed" tabindex="0">Completed</div>
 				<div class="project-header">
 					<h2>PROJECTS</h2>
 					<img src="../src/assets/plus.svg" alt="add-icon" class="new-project-btn" />
@@ -46,14 +46,35 @@
 					<h2 class="main-title"></h2>
 				</div>
 				<div class="task-list">
-					<div class="addTaskBtn">
+				</div>					
+				<div class="add-task-btn hidden">
 						<img src="../src/assets/plus.svg" alt="task-add-icon">
 						<p>Add Task</p>
-					</div>
+				</div>
+				<!-- TASK MODAL -->
+				<div class="task-modal-container hidden">
+					<form action="">
+						<input type="text" id="task-name" placeholder="Task name" autocomplete="off" required>
+						<input type="text" id="task-description" placeholder="Description" maxlength="40">
+						<div class="bottom-tabs">
+							<div class="option-container">
+								<div class="due-date-container"><img src="../src/assets/calendar.svg" alt="calendar svg"><p>Due date</p></div>
+								<div class="priority-container"><img src="../src/assets/flag.svg" alt="flag svg"><p>Priority</p></div>
+							</div>
+							<div class="submit-close-container mobile">
+								<img src="../src/assets/cancel.svg" class="cancel-task-btn" alt="cancel">
+								<img src="../src/assets/send.svg" class="submit-task-btn" alt="send">
+							</div>
+							<div class="submit-close-container desktop">
+								<button type='button' class="cancel-task-btn">Cancel</button>
+								<button type='submit' class="submit-task-btn">Add Tasks</button>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 		</main>
-		<!-- MODALS -->
+		<!-- PROJECT MODAL -->
 		<div class="project-modal-background hidden">
 			<div class="project-modal-container">
 				<header>

@@ -1,42 +1,164 @@
-/* MODAL */
+:root {
+	--add-task-btn-color: invert(43%) sepia(57%) saturate(7479%) hue-rotate(354deg) brightness(95%) contrast(87%);
+   --add-task-btn-desktop-color: rgb(54, 141, 218);
+   --add-task-btn-desktop-color-hover: rgb(0, 98, 164);
+   --cancel-task-btn-desktop-color: rgb(227, 67, 67);
+   --cancel-task-btn-desktop-color-hover: rgb(177, 24, 11);
+	--cancel-task-btn-color: invert(66%) sepia(3%) saturate(409%) hue-rotate(179deg) brightness(94%) contrast(91%);
+}
+
+/* PROJECT MODAL */
 .hidden {
-   display: none;
+	display: none;
 }
 .project-modal-background {
-   position: absolute;
-   top: 0;
-   height: 100%;
-   width: 100%;
-   background-color: rgb(0,0,0, 0.5);
-   z-index: 1;
+	position: absolute;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgb(0, 0, 0, 0.5);
+	z-index: 1;
 }
 .project-modal-container {
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   position: absolute;
-   background-color: rgb(202, 202, 196);
-   width: clamp(300px, 80vw, 600px);
-   border-radius: 10px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	background-color: rgb(255, 255, 255);
+	width: clamp(300px, 80vw, 600px);
+	border-radius: 10px;
 }
 .modal-btn-container {
-   width: 50vw;
+	width: 50vw;
 }
 .project-modal-container header {
-   border-radius: 10px 10px 0 0;
-   height: 50px;
-   width: 100%;
+	border-radius: 10px 10px 0 0;
+	height: 50px;
+	width: 100%;
 }
 .project-modal-container form {
-   display: flex;
-   flex-direction: column;
-   padding: 30px;
-   width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	width: 100%;
+}
+.project-modal-container form input {
+   margin-top: 5px;
+   outline: none;
+   appearance: none;
+   border-radius: 5px;
+   border: 1px solid black;
+   padding: 5px;
 }
 .modal-btn-container {
-   margin-top: 30px;
+	margin-top: 30px;
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+/* Task Modal */
+.task-modal-container {
    width: 100%;
-   display: flex;
-   justify-content: flex-end;
-   gap: 10px;
+}
+.task-modal-container form {
+	border: 1.5px solid rgb(174, 174, 174);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: 100%;
+	padding: 15px 15px;
+}
+.task-modal-container form input {
+	outline: none;
+	font-size: 1.03rem;
+	width: 100%;
+	appearance: none;
+	border: none;
+}
+.task-modal-container .bottom-tabs {
+	width: 100%;
+	display: flex;
+   align-items: center;
+	justify-content: space-between;
+}
+/* Due date and priority buttons */
+.option-container {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.option-container img {
+	width: 25px;
+}
+.submit-close-container img {
+	width: 35px;
+}
+.due-date-container,
+.priority-container {
+	padding: 0px 10px;
+	border: 1px solid black;
+	border-radius: 10px;
+	display: flex;
+	align-self: center;
+	justify-content: center;
+	gap: 5px;
+}
+.option-container p {
+   cursor: pointer;
+	margin: 0;
+	line-height: 2;
+}
+.submit-close-container {
+   cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+/* add task and close task btn [DESKTOP]*/
+.submit-close-container.desktop {
+	display: none;
+   gap: 15px;
+}
+.submit-close-container.desktop button {
+   appearance: none;
+   margin: 0;
+   font-size: 1.1rem;
+   border: none;
+   border-radius: 7px;
+   padding: 7px 13px;
+   transition: all 0.3s ease-in-out;
+}
+.submit-close-container.desktop .submit-task-btn{
+   color: white;
+   background-color:  var(--add-task-btn-desktop-color);
+}
+.submit-close-container.desktop .cancel-task-btn {
+   color: white;
+   background-color:  var(--cancel-task-btn-desktop-color);
+}
+.submit-close-container.desktop .submit-task-btn:hover {
+   background-color:  var(--add-task-btn-desktop-color-hover);
+}
+.submit-close-container.desktop .cancel-task-btn:hover {
+   background-color:  var(--cancel-task-btn-desktop-color-hover);
+}
+.submit-close-container.mobile .submit-task-btn {
+	filter: var(--add-task-btn-color);
+}
+.submit-close-container.mobile .cancel-task-btn {
+	filter: var(--cancel-task-btn-color);
+}
+
+@media screen and (min-width: 750px) {
+	.submit-close-container.desktop {
+		display: flex;
+	}
+	.submit-close-container.mobile {
+		display: none;
+	}
 }

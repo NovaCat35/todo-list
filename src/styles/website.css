@@ -2,6 +2,7 @@
 	--nav-bar-background: rgb(237, 237, 236);
 	--top-nav-background: rgb(229, 116, 94);
 	--footer-background: rgb(219, 219, 219);
+	--nav-tab-focus-color: rgb(238, 156, 54);
 }
 * {
 	box-sizing: border-box;
@@ -15,6 +16,10 @@ body {
 body {
 	display: flex;
 	flex-direction: column;
+}
+
+.hidden {
+	display: none;
 }
 
 /* ********************** */
@@ -92,7 +97,7 @@ h1 {
  * All the color goes into the search-container. 
  * We will use the container as the background and then the search-bar-input
  * to expand out and in when the container2 is focused-in.
- */
+*/
 .container2 .search-container {
 	position: absolute;
 	border-radius: 50px;
@@ -143,12 +148,16 @@ main .side-nav.active {
 .navtab {
 	cursor: pointer;
 	margin: 10px 10px;
-	border: 1px solid black;
+	border: 2px solid rgb(255, 255, 255);
 	border-radius: 10px;
+	background-color: rgb(255, 255, 255);
 	padding: 10px;
 	width: 80%;
 }
-/* Project SideNav links */
+.navtab:hover, .navtab:hover {
+	border: 2px solid var(--nav-tab-focus-color);
+}
+/* Project SideNav  */
 .project-header {
 	display: flex;
 	align-items: center;
@@ -179,11 +188,15 @@ main .side-nav.active {
 	justify-content: space-between;
 	align-items: center;
 	font-size: 1.2rem;
-	border: 1px solid black;
+	border: 1px solid rgb(138, 138, 138);
 	border-radius: 10px;
 	width: 80%;
 	height: 30px;
 	padding: 5px;
+	transition: all .3s ease-in-out;
+}
+.project-link-div:focus{
+	border: 1px solid rgb(25, 25, 25);
 }
 .project-link-div p {
 	font-size: 1.2rem;
@@ -213,18 +226,29 @@ main .main-content {
 	align-items: center;
 }
 .task-list {
+	margin-top: 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
 	width: 100%;
+	gap: 10px;
 }
-.addTaskBtn {
+/* Individual Tasks */
+.task-info-container {
+	width: 100%;
+	padding: 5px;
+	border-bottom: 1px solid rgb(192, 192, 192);
+	font-size: 1.1rem;
+}
+/* "Add Task" button */
+.add-task-btn {
+	cursor: pointer;
 	width: 100%;
 	display: flex;
 	justify-content: flex-start;
 }
-.addTaskBtn img {
+.add-task-btn img {
 	width: 30px;
 }
 
