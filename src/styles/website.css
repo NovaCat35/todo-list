@@ -184,6 +184,7 @@ main .side-nav.active {
 	transform: rotate(360deg);
 }
 .project-link-div {
+	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

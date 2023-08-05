@@ -23,6 +23,8 @@ function displayMainInfo(event, navTabInfo) {
 	}
 	// Show title page
 	mainTitle.textContent = targetName;
+	// Hide task modal if open
+	closeTaskModal();
 }
 
 function displayTask(projectName) {
@@ -33,41 +35,48 @@ function displayTask(projectName) {
 	taskList.textContent = "";
 
 	// Loop through tasks and create task elements
-	targetProjectInfo.getTasks().forEach((task) => {
-		const taskElement = document.createElement("div");
-      taskElement.classList.add('task-info-container')
-		taskElement.textContent = task.title; 
-		taskList.appendChild(taskElement);
-	});
+	if (targetProjectInfo) {
+		targetProjectInfo.getTasks().forEach((task) => {
+			const taskElement = document.createElement("div");
+			taskElement.classList.add("task-info-container");
+			taskElement.textContent = task.title;
+			taskList.appendChild(taskElement);
+		});
+	}
 }
 
 // -----------------------
-// track if the listener is added
-let isAddTaskBtnListenerAdded = false; 
-
 function addTaskBtn(targetProjectName) {
-   // Initial setup reveal "Add Task" btn
-   const addTaskBtn = document.querySelector('.add-task-btn');
-   addTaskBtn.classList.remove('hidden');
+	// Initial setup reveal "Add Task" btn
+	const addTaskBtn = document.querySelector(".add-task-btn");
+	addTaskBtn.classList.remove("hidden");
 
-   // Check if the event listener is already added before adding it
-   if (!isAddTaskBtnListenerAdded) {
-      addTaskBtn.addEventListener('click', () => {
-         addTaskBtn.classList.add('hidden');
-         showTaskModal(targetProjectName);
-      });
+	// Remove the event listener if it exists to avoid conflict
+	addTaskBtn.removeEventListener("click", addTaskClickHandler);
+	addTaskBtn.addEventListener("click", addTaskClickHandler);
 
-      // Set the flag to indicate that the event listener has been added
-      isAddTaskBtnListenerAdded = true;
-   }
+	function addTaskClickHandler() {
+		addTaskBtn.classList.add("hidden");
+		showTaskModal(targetProjectName);
+	}
 }
-
-
 
 function showTaskModal(targetProjectName) {
 	const taskModal = document.querySelector(".task-modal-container");
 	taskModal.classList.remove("hidden");
+	console.log(targetProjectName);
 	handleModalRequest("addTask", targetProjectName);
 }
 
-export { displayMainInfo, displayTask };
+function closeTaskModal() {
+	const modalTask = document.querySelector(".task-modal-container");
+	const addTaskBtn = document.querySelector(".add-task-btn");
+
+	document.getElementById("task-name").value = "";
+	document.getElementById("task-description").value = "";
+
+	modalTask.classList.add("hidden");
+	addTaskBtn.classList.remove("hidden");
+}
+
+export { displayMainInfo, displayTask, closeTaskModal };
