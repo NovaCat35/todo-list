@@ -113,8 +113,8 @@
 }
 .option-container p {
 	cursor: pointer;
-	margin: 0;
 	line-height: 2;
+	margin: 0;
 }
 /* Priority Container */
 .dropdown-container {
@@ -136,6 +136,7 @@
 	flex-direction: column;
 }
 .dropdown-container li {
+	cursor: pointer;
 	padding: 10px;
 	display: flex;
 	gap: 10px;
@@ -220,6 +221,7 @@
 		align-items: center;
 		justify-content: space-between;
 	}
+	/* Change the bottom submit tabs to align with the option tabs */
 	.submit-close-container {
 		margin-top: 0;
 		justify-content: flex-start;
@@ -227,7 +229,11 @@
 		border-top: none;
 		padding-top: 0;
 	}
+	.task-modal-container form {
+		padding: 20px 10px 10px;
+	}
 }
+
 @media screen and (min-width: 832px) {
 	.submit-close-container.desktop {
 		display: flex;

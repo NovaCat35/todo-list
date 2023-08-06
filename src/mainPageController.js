@@ -49,10 +49,28 @@ function displayTask(projectName) {
 	// Loop through tasks and create task elements
 	if (targetProjectInfo) {
 		targetProjectInfo.getTasks().forEach((task) => {
-			const taskElement = document.createElement("div");
-			taskElement.classList.add("task-info-container");
-			taskElement.textContent = task.title;
-			taskList.appendChild(taskElement);
+			const taskInfoContainer = createElement("div", "task-info-container");
+
+         // TITLE
+         const taskTitle = createElement("p", "task-title");
+         taskTitle.textContent = task.title
+         taskInfoContainer.appendChild(taskTitle)
+
+         // DESCRIPTION
+         const taskDescription = createElement("p", "task-description");
+         if (task.description) {
+            taskDescription.textContent = task.description
+            taskInfoContainer.appendChild(taskDescription)
+         }
+
+         // PRIORITY
+         const taskPriority = createElement("p", "task-priority");
+         if (task.priority) {
+            taskPriority.textContent = task.priority         
+            taskInfoContainer.appendChild(taskPriority)
+         }
+
+			taskList.appendChild(taskInfoContainer);
 		});
 	}
 }
@@ -89,6 +107,12 @@ function closeTaskModal() {
 
 	modalTask.classList.add("hidden");
 	addTaskBtn.classList.remove("hidden");
+}
+
+function createElement(type, className) {
+	const element = document.createElement(type);
+	element.classList.add(className);
+	return element;
 }
 
 export { displayMainInfo, displayTask, closeTaskModal };
