@@ -6,14 +6,19 @@ const projectForm = document.querySelector(".project-modal-container form");
 const taskForm = document.querySelector(".task-modal-container form");
 const addProjectBtn = document.querySelector(".modal-project-btn");
 const cancelBtn = document.querySelector(".modal-cancel-btn");
-let targetProjectName = null;
+const priorityDropdownItems = document.querySelectorAll(".dropdown li");
 
-let editMode = false; // Add a flag to track the edit mode
+let targetProjectName = null;
+let selectedPriority = null;
+let editMode = false;
 
 // ************** PROJECT MODAL **************
-// modalElement being the modalProjectContainer or the modalTaskContainer
+// modalElement being the modalProjectContainer or the modalTaskContain
 export default function handleModalRequest(modalType, projectId = null) {
+	// Setup initial values
 	targetProjectName = projectId;
+	selectedPriority = null;
+
 	switch (modalType) {
 		case "addProject":
 			editMode = false; // Set edit mode to false for adding a new project
@@ -24,7 +29,7 @@ export default function handleModalRequest(modalType, projectId = null) {
 			editProject(projectId);
 			break;
 		case "addTask":
-			console.log(`project@handler: ${projectId}`)
+			console.log(`project@handler: ${projectId}`);
 			addTaskModalHandler(projectId);
 		default:
 			break;
@@ -111,29 +116,34 @@ function addTaskModalHandler() {
 
 	// Function to create event listeners with the current targetProjectName
 	function createEventListeners() {
-		 function submitHandler(event) {
-			  event.preventDefault();
-			  if (taskForm.checkValidity()) {
-					console.log(`Testing: ${targetProjectName}`);
-					updateTaskToProject();
-			  }
-		 }
+		function submitHandler(event) {
+			event.preventDefault();
+			if (taskForm.checkValidity()) {
+				console.log(`Testing: ${targetProjectName}`);
+				updateTaskToProject();
+			}
+		}
 
-		 function submitMobileHandler() {
-			  if (taskForm.checkValidity()) {
-					updateTaskToProject();
-			  }
-		 }
+		function submitMobileHandler() {
+			if (taskForm.checkValidity()) {
+				updateTaskToProject();
+			}
+		}
 
-		 function cancelHandler() {
-			  closeTaskModal();
-		 }
+		function cancelHandler() {
+			closeTaskModal();
+		}
 
-		 return {
-			  submitHandler,
-			  submitMobileHandler,
-			  cancelHandler,
-		 };
+		function priorityHandler(priority) {
+			selectedPriority = priority.getAttribute('data-priority');
+		}
+
+		return {
+			submitHandler,
+			submitMobileHandler,
+			cancelHandler,
+			priorityHandler,
+		};
 	}
 
 	// Remove the event listeners if they exist
@@ -141,25 +151,29 @@ function addTaskModalHandler() {
 	taskForm.removeEventListener("submit", eventListeners.submitHandler);
 	addTaskBtnMobile.removeEventListener("click", eventListeners.submitMobileHandler);
 	cancelTaskBtn.forEach((taskBtn) => taskBtn.removeEventListener("click", eventListeners.cancelHandler));
+	priorityDropdownItems.forEach((priority) => {
+		priority.removeEventListener("click", eventListeners.priorityHandler);
+	});
 
 	// Add the event listeners with the updated targetProjectName
 	const newEventListeners = createEventListeners();
 	taskForm.addEventListener("submit", newEventListeners.submitHandler);
 	addTaskBtnMobile.addEventListener("click", newEventListeners.submitMobileHandler);
 	cancelTaskBtn.forEach((taskBtn) => taskBtn.addEventListener("click", newEventListeners.cancelHandler));
+	priorityDropdownItems.forEach((priority) => {
+		priority.addEventListener("click", newEventListeners.priorityHandler.bind(null, priority));
+	});
 }
-
 
 function updateTaskToProject() {
 	const targetProjectInfo = projectList.find((project) => project.title == targetProjectName);
 	const taskTitle = document.getElementById("task-name").value;
 	const taskDescription = document.getElementById("task-description").value;
 	// const taskDueDate = ...
-	// const taskPriority = ...
-	targetProjectInfo.setTask(taskTitle, taskDescription);
+	const taskPriority = selectedPriority;
+	targetProjectInfo.setTask(taskTitle, taskDescription, taskPriority);
 
 	// Update the task that shows up in main page
 	displayTask(targetProjectName);
 	closeTaskModal();
 }
-

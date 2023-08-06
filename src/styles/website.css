@@ -257,6 +257,12 @@ main .main-content {
 .task-info-container p {
 	margin: 0;
 }
+.task-info-container .task-title {
+	font-size: 1.2rem;
+}
+.task-info-container .task-description {
+	color:rgb(83, 83, 83);
+}
 /* "Add Task" button */
 .add-task-btn {
 	cursor: pointer;

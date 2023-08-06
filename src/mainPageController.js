@@ -27,7 +27,6 @@ function displayMainInfo(event, navTabInfo) {
 
 		if (projectElement) {
 			targetName = projectElement.getAttribute("data-project-id");
-
 			// IF PROJECT : display tasks & show "Add Task"
 			displayTask(targetName);
 			addTaskBtn(targetName);
@@ -51,24 +50,24 @@ function displayTask(projectName) {
 		targetProjectInfo.getTasks().forEach((task) => {
 			const taskInfoContainer = createElement("div", "task-info-container");
 
-         // TITLE
-         const taskTitle = createElement("p", "task-title");
-         taskTitle.textContent = task.title
-         taskInfoContainer.appendChild(taskTitle)
+			// TITLE
+			const taskTitle = createElement("p", "task-title");
+			taskTitle.textContent = task.title;
+			taskInfoContainer.appendChild(taskTitle);
 
-         // DESCRIPTION
-         const taskDescription = createElement("p", "task-description");
-         if (task.description) {
-            taskDescription.textContent = task.description
-            taskInfoContainer.appendChild(taskDescription)
-         }
+			// DESCRIPTION
+			const taskDescription = createElement("p", "task-description");
+			if (task.description) {
+				taskDescription.textContent = task.description;
+				taskInfoContainer.appendChild(taskDescription);
+			}
 
-         // PRIORITY
-         const taskPriority = createElement("p", "task-priority");
-         if (task.priority) {
-            taskPriority.textContent = task.priority         
-            taskInfoContainer.appendChild(taskPriority)
-         }
+			// PRIORITY
+			const taskPriority = createElement("p", "task-priority");
+			if (task.priority) {
+				taskPriority.textContent = task.priority;
+				taskInfoContainer.appendChild(taskPriority);
+			}
 
 			taskList.appendChild(taskInfoContainer);
 		});
