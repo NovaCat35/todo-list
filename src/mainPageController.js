@@ -10,22 +10,28 @@ import { projectList } from "./projectController.js";
  */
 function displayMainInfo(event, navTabInfo) {
 	const mainTitle = document.querySelector(".main-title");
-   const sideNavigation = document.querySelector('.side-nav')
-   const hamburger = document.querySelector('.hamburger')
+	const sideNavigation = document.querySelector(".side-nav");
+	const hamburger = document.querySelector(".hamburger");
 	let targetName = null;
 
-   // Collapses the side-nav & hamburger menu if in mobile mode
-   sideNavigation.classList.remove('active');
-   hamburger.classList.remove('active');
+	// Collapses the side-nav & hamburger menu if in mobile mode
+	sideNavigation.classList.remove("active");
+	hamburger.classList.remove("active");
 
 	// Checks if displaying the main nav title or project's title
 	if (navTabInfo == "mainTabInfo") {
 		targetName = event.target.id;
 	} else {
-		targetName = event.target.getAttribute("data-project-id");
-		// IF PROJECT : display tasks & show "Add Task"
-		displayTask(targetName);
-		addTaskBtn(targetName);
+		// Find the closest ancestor with data-project-id attribute
+		const projectElement = event.target.closest("[data-project-id]");
+
+		if (projectElement) {
+			targetName = projectElement.getAttribute("data-project-id");
+
+			// IF PROJECT : display tasks & show "Add Task"
+			displayTask(targetName);
+			addTaskBtn(targetName);
+		}
 	}
 	// Show title page
 	mainTitle.textContent = targetName;

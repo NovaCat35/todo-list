@@ -207,6 +207,8 @@ main .side-nav.active {
 }
 .project-link-div p {
 	font-size: 1.2rem;
+	flex: 1;
+   overflow: hidden;
 }
 .project-link-div .editIcon {
 	width: 23px;
