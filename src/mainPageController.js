@@ -1,5 +1,6 @@
 import handleModalRequest from "./modalHandler.js";
 import { projectList } from "./projectController.js";
+import priorityFlag from "./assets/flag-fill.svg";
 
 /**
  * @param {title of navTab} navTabInfo
@@ -49,26 +50,47 @@ function displayTask(projectName) {
 	if (targetProjectInfo) {
 		targetProjectInfo.getTasks().forEach((task) => {
 			const taskInfoContainer = createElement("div", "task-info-container");
+         const taskInnerTopContainer = createElement("div", "task-top-container");
+         const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
+         const taskInnerRightContainer = createElement("div", "task-inner-right-container");
+         const taskDescrContainer = createElement("div", "task-descr-container");
 
 			// TITLE
 			const taskTitle = createElement("p", "task-title");
 			taskTitle.textContent = task.title;
-			taskInfoContainer.appendChild(taskTitle);
+			taskInnerLeftContainer.appendChild(taskTitle);
 
 			// DESCRIPTION
 			const taskDescription = createElement("p", "task-description");
 			if (task.description) {
 				taskDescription.textContent = task.description;
-				taskInfoContainer.appendChild(taskDescription);
+				taskDescrContainer.appendChild(taskDescription);
 			}
 
 			// PRIORITY
-			const taskPriority = createElement("p", "task-priority");
-			if (task.priority) {
-				taskPriority.textContent = task.priority;
-				taskInfoContainer.appendChild(taskPriority);
+			const taskFlagImg = createElement("img", "priority-flag");
+         taskFlagImg.src = priorityFlag
+			const taskPriority = task.priority;
+			switch (taskPriority) {
+				case "high-priority":
+					taskFlagImg.classList.add("flag-high");
+					break;
+				case "medium-priority":
+					taskFlagImg.classList.add("flag-medium");
+					break;
+				case "low-priority":
+					taskFlagImg.classList.add("flag-low");
+					break;
+				default:
+					taskFlagImg.classList.add("flag-none");
 			}
+			taskInnerRightContainer.appendChild(taskFlagImg);
 
+         // Adding final compiled task to taskList!
+         taskInnerTopContainer.appendChild(taskInnerLeftContainer)
+         taskInnerTopContainer.appendChild(taskInnerRightContainer)
+         taskInfoContainer.appendChild(taskInnerTopContainer)
+         taskInfoContainer.appendChild(taskDescrContainer)
 			taskList.appendChild(taskInfoContainer);
 		});
 	}

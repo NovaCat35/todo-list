@@ -235,44 +235,6 @@ main .main-content {
 	justify-content: flex-start;
 	align-items: center;
 }
-.task-list {
-	margin-top: 10px;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: center;
-	width: 100%;
-	gap: 10px;
-}
-/* Individual Tasks */
-.task-info-container {
-	width: 100%;
-	padding: 5px;
-	border-bottom: 1px solid rgb(192, 192, 192);
-	font-size: 1.1rem;
-	display: flex;
-	flex-flow: column;
-	gap: 5px;
-}
-.task-info-container p {
-	margin: 0;
-}
-.task-info-container .task-title {
-	font-size: 1.2rem;
-}
-.task-info-container .task-description {
-	color:rgb(83, 83, 83);
-}
-/* "Add Task" button */
-.add-task-btn {
-	cursor: pointer;
-	width: 100%;
-	display: flex;
-	justify-content: flex-start;
-}
-.add-task-btn img {
-	width: 30px;
-}
 
 /* ********************** */
 /*** FOOTER ***/

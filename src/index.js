@@ -1,5 +1,7 @@
 import "./styles/website.css";
 import './styles/modal.css';
+import './styles/task.css';
+
 import { addNewProject } from "./projectController.js";
 import fillMainInfo from './mainPageController.js'
 import initWebsite from './initWebsite.js'
