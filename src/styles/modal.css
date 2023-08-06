@@ -1,10 +1,13 @@
 :root {
 	--add-task-btn-color: invert(43%) sepia(57%) saturate(7479%) hue-rotate(354deg) brightness(95%) contrast(87%);
-   --add-task-btn-desktop-color: rgb(54, 141, 218);
-   --add-task-btn-desktop-color-hover: rgb(0, 98, 164);
-   --cancel-task-btn-desktop-color: rgb(227, 67, 67);
-   --cancel-task-btn-desktop-color-hover: rgb(177, 24, 11);
+	--add-task-btn-desktop-color: rgb(54, 141, 218);
+	--add-task-btn-desktop-color-hover: rgb(0, 98, 164);
+	--cancel-task-btn-desktop-color: rgb(227, 67, 67);
+	--cancel-task-btn-desktop-color-hover: rgb(177, 24, 11);
 	--cancel-task-btn-color: invert(66%) sepia(3%) saturate(409%) hue-rotate(179deg) brightness(94%) contrast(91%);
+	--priority-high-color: invert(23%) sepia(89%) saturate(6106%) hue-rotate(344deg) brightness(93%) contrast(114%);
+	--priority-medium-color: invert(69%) sepia(42%) saturate(3413%) hue-rotate(5deg) brightness(112%) contrast(98%);
+	--priority-low-color: invert(65%) sepia(87%) saturate(1264%) hue-rotate(136deg) brightness(103%) contrast(98%);
 }
 
 /* PROJECT MODAL */
@@ -43,12 +46,12 @@
 	width: 100%;
 }
 .project-modal-container form input {
-   margin-top: 5px;
-   outline: none;
-   appearance: none;
-   border-radius: 5px;
-   border: 1px solid black;
-   padding: 5px;
+	margin-top: 5px;
+	outline: none;
+	appearance: none;
+	border-radius: 5px;
+	border: 1px solid black;
+	padding: 5px;
 }
 .modal-btn-container {
 	margin-top: 30px;
@@ -60,7 +63,7 @@
 
 /* Task Modal */
 .task-modal-container {
-   width: 100%;
+	width: 100%;
 }
 .task-modal-container form {
 	border: 1.5px solid rgb(174, 174, 174);
@@ -71,7 +74,7 @@
 	justify-content: center;
 	gap: 10px;
 	width: 100%;
-	padding: 15px 15px;
+	padding: 20px 10px 5px;
 }
 .task-modal-container form input {
 	outline: none;
@@ -83,8 +86,7 @@
 .task-modal-container .bottom-tabs {
 	width: 100%;
 	display: flex;
-   align-items: center;
-	justify-content: space-between;
+	flex-direction: column;
 }
 /* Due date and priority buttons */
 .option-container {
@@ -100,6 +102,7 @@
 }
 .due-date-container,
 .priority-container {
+	position: relative;
 	padding: 0px 10px;
 	border: 1px solid black;
 	border-radius: 10px;
@@ -109,43 +112,98 @@
 	gap: 5px;
 }
 .option-container p {
-   cursor: pointer;
+	cursor: pointer;
 	margin: 0;
 	line-height: 2;
 }
+/* Priority Container */
+.dropdown-container {
+	position: absolute;
+	top: 32px;
+	background-color: rgb(249, 249, 249);
+	border-radius: 12px;
+	padding: 10px;
+	width: 200px;
+	display: none;
+	box-shadow: 0px 0px 10px 0px rgb(207 207 207);
+}
+.dropdown-container ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.dropdown-container li {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+.dropdown-container li img {
+	width: 27px;
+}
+.dropdown-container li p {
+	line-height: 1;
+}
+.dropdown-container li:first-child img {
+	filter: var(--priority-high-color);
+}
+.dropdown-container li:nth-child(2) img {
+	filter: var(--priority-medium-color);
+}
+.dropdown-container li:last-child img {
+	filter: var(--priority-low-color);
+}
+.dropdown-container li:hover {
+	background-color: rgb(200, 200, 200);
+}
+.priority-container:focus {
+	color: rgb(91, 91, 91);
+	border: 1px solid rgb(165, 165, 165);
+	background-color: rgb(230, 230, 230);
+}
+.priority-container:focus .dropdown-container {
+	display: block;
+}
+
 .submit-close-container {
-   cursor: pointer;
+	cursor: pointer;
 	display: flex;
 	align-items: center;
 	gap: 10px;
+	justify-content: flex-end;
+	margin-top: 15px;
+	border-top: 1.5px solid #a7a7a7;
+	padding-top: 5px;
 }
 /* add task and close task btn [DESKTOP]*/
 .submit-close-container.desktop {
 	display: none;
-   gap: 15px;
+	gap: 15px;
 }
 .submit-close-container.desktop button {
-   appearance: none;
-   margin: 0;
-   font-size: 1.1rem;
-   border: none;
-   border-radius: 7px;
-   padding: 7px 13px;
-   transition: all 0.3s ease-in-out;
+	appearance: none;
+	margin: 0;
+	font-size: 1.1rem;
+	border: none;
+	border-radius: 7px;
+	padding: 7px 13px;
+	transition: all 0.3s ease-in-out;
 }
-.submit-close-container.desktop .submit-task-btn{
-   color: white;
-   background-color:  var(--add-task-btn-desktop-color);
+.submit-close-container.desktop .submit-task-btn {
+	color: white;
+	background-color: var(--add-task-btn-desktop-color);
 }
 .submit-close-container.desktop .cancel-task-btn {
-   color: white;
-   background-color:  var(--cancel-task-btn-desktop-color);
+	color: white;
+	background-color: var(--cancel-task-btn-desktop-color);
 }
 .submit-close-container.desktop .submit-task-btn:hover {
-   background-color:  var(--add-task-btn-desktop-color-hover);
+	background-color: var(--add-task-btn-desktop-color-hover);
 }
 .submit-close-container.desktop .cancel-task-btn:hover {
-   background-color:  var(--cancel-task-btn-desktop-color-hover);
+	background-color: var(--cancel-task-btn-desktop-color-hover);
 }
 .submit-close-container.mobile .submit-task-btn {
 	filter: var(--add-task-btn-color);
@@ -154,11 +212,28 @@
 	filter: var(--cancel-task-btn-color);
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 396px) {
+	.task-modal-container .bottom-tabs {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.submit-close-container {
+		margin-top: 0;
+		justify-content: flex-start;
+		margin-top: 0;
+		border-top: none;
+		padding-top: 0;
+	}
+}
+@media screen and (min-width: 832px) {
 	.submit-close-container.desktop {
 		display: flex;
 	}
 	.submit-close-container.mobile {
 		display: none;
+	}
+	.task-modal-container form {
+		padding: 15px 15px;
 	}
 }

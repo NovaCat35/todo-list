@@ -10,7 +10,13 @@ import { projectList } from "./projectController.js";
  */
 function displayMainInfo(event, navTabInfo) {
 	const mainTitle = document.querySelector(".main-title");
+   const sideNavigation = document.querySelector('.side-nav')
+   const hamburger = document.querySelector('.hamburger')
 	let targetName = null;
+
+   // Collapses the side-nav & hamburger menu if in mobile mode
+   sideNavigation.classList.remove('active');
+   hamburger.classList.remove('active');
 
 	// Checks if displaying the main nav title or project's title
 	if (navTabInfo == "mainTabInfo") {

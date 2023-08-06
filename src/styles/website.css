@@ -1,6 +1,6 @@
 :root {
 	--nav-bar-background: rgb(237, 237, 236);
-	--top-nav-background: rgb(229, 116, 94);
+	--top-nav-background: rgb(226, 106, 82);
 	--footer-background: rgb(219, 219, 219);
 	--nav-tab-focus-color: rgb(238, 156, 54);
 }
@@ -10,6 +10,7 @@
 
 html,
 body {
+	height: 100%;
 	margin: 0;
 	min-height: 100vh;
 }
@@ -128,6 +129,7 @@ h1 {
 /* ********************** */
 /*** MAIN ***/
 main {
+	height: 100%;
 	flex: 1;
 	display: flex;
 }
@@ -141,6 +143,9 @@ main .side-nav {
 	width: 0;
 	overflow-y: auto;
 	transition: all 0.3s ease-in-out;
+	position: fixed;
+	z-index: 1;
+	height: 100%;
 }
 main .side-nav.active {
 	width: 80vw;
@@ -154,7 +159,8 @@ main .side-nav.active {
 	padding: 10px;
 	width: 80%;
 }
-.navtab:hover, .navtab:hover {
+.navtab:hover,
+.navtab:hover {
 	border: 2px solid var(--nav-tab-focus-color);
 }
 /* Project SideNav  */
@@ -194,9 +200,9 @@ main .side-nav.active {
 	width: 80%;
 	height: 30px;
 	padding: 5px;
-	transition: all .3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
-.project-link-div:focus{
+.project-link-div:focus {
 	border: 1px solid rgb(25, 25, 25);
 }
 .project-link-div p {
@@ -205,13 +211,14 @@ main .side-nav.active {
 .project-link-div .editIcon {
 	width: 23px;
 }
-.project-link-div .deleteIcon{
-	position: relative; 
+.project-link-div .deleteIcon {
+	position: relative;
 	top: 2px;
 	width: 23px;
 }
 /* MAIN Container */
 main .main-content {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -253,7 +260,6 @@ main .main-content {
 	width: 30px;
 }
 
-
 /* ********************** */
 /*** FOOTER ***/
 footer {
@@ -264,6 +270,7 @@ footer {
 	width: 100vw;
 	height: 40px;
 	background-color: var(--footer-background);
+	z-index: 1;
 }
 footer img {
 	width: 30px;
@@ -273,7 +280,7 @@ footer img:hover {
 	transform: rotate(360deg);
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 695px) {
 	/* HEADER */
 	header {
 		gap: 30px;
@@ -291,7 +298,9 @@ footer img:hover {
 		display: none;
 	}
 	/* MAIN */
-	main .side-nav, main .side-nav.active {
+	main .side-nav,
+	main .side-nav.active {
 		width: 300px;
+		position: static;
 	}
 }
