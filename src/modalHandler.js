@@ -6,6 +6,8 @@ const projectForm = document.querySelector(".project-modal-container form");
 const taskForm = document.querySelector(".task-modal-container form");
 const addProjectBtn = document.querySelector(".modal-project-btn");
 const cancelBtn = document.querySelector(".modal-cancel-btn");
+const priorityBtn =  document.querySelector(".priority-container");
+const priorityDropdown = document.querySelector(".dropdown-container");
 const priorityDropdownItems = document.querySelectorAll(".dropdown li");
 
 let targetProjectName = null;
@@ -114,6 +116,8 @@ function addTaskModalHandler() {
 	const addTaskBtnMobile = document.querySelector(".submit-close-container.mobile .submit-task-btn");
 	const cancelTaskBtn = document.querySelectorAll(".cancel-task-btn");
 
+	addListenerToOpenClosePriority()
+
 	// Function to create event listeners with the current targetProjectName
 	function createEventListeners() {
 		function submitHandler(event) {
@@ -134,8 +138,10 @@ function addTaskModalHandler() {
 			closeTaskModal();
 		}
 
-		function priorityHandler(priority) {
-			selectedPriority = priority.getAttribute('data-priority');
+		function priorityHandler(event) {
+			selectedPriority = event.target.closest("[data-priority]").getAttribute('data-priority');
+			priorityDropdown.classList.remove('active');
+			event.stopPropagation(); // Stop event propagation to parent (i.e. priorityDropdown)
 		}
 
 		return {
@@ -161,7 +167,7 @@ function addTaskModalHandler() {
 	addTaskBtnMobile.addEventListener("click", newEventListeners.submitMobileHandler);
 	cancelTaskBtn.forEach((taskBtn) => taskBtn.addEventListener("click", newEventListeners.cancelHandler));
 	priorityDropdownItems.forEach((priority) => {
-		priority.addEventListener("click", newEventListeners.priorityHandler.bind(null, priority));
+		priority.addEventListener("click", newEventListeners.priorityHandler);
 	});
 }
 
@@ -176,4 +182,15 @@ function updateTaskToProject() {
 	// Update the task that shows up in main page
 	displayTask(targetProjectName);
 	closeTaskModal();
+}
+
+let priorityListenerAdded = false;
+function addListenerToOpenClosePriority(){
+	if (!priorityListenerAdded) {
+		priorityBtn.addEventListener('click', () => {
+			console.log('wth')
+			priorityDropdown.classList.toggle('active');
+		});
+		priorityListenerAdded = true;
+	}
 }

@@ -19,7 +19,7 @@ body {
 	flex-direction: column;
 }
 
-.hidden {
+.add-task-btn.hidden {
 	display: none;
 }
 
