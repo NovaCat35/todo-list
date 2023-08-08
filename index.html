@@ -30,7 +30,7 @@
 		<main>
 			<!-- SIDEBAR -->
 			<nav class="side-nav">
-				<div class="all-navTab navtab" id ="All" tabindex="0">All</div>
+				<div class="all-navTab navtab" id="All" tabindex="0">All</div>
 				<div class="today-navTab navtab" id="Today" tabindex="0">Today</div>
 				<div class="upcoming-navTab navtab" id="Upcoming" tabindex="0">Upcoming</div>
 				<div class="completed-navTab navtab" id="Completed" tabindex="0">Completed</div>
@@ -45,38 +45,52 @@
 				<div class="taskInfoHeader">
 					<h2 class="main-title"></h2>
 				</div>
-				<div class="task-list">
-				</div>					
+				<div class="task-list"></div>
 				<div class="add-task-btn hidden">
-						<img src="../src/assets/plus.svg" alt="task-add-icon">
-						<p>Add Task</p>
+					<img src="../src/assets/plus.svg" alt="task-add-icon" />
+					<p>Add Task</p>
 				</div>
 				<!-- TASK MODAL -->
 				<div class="task-modal-container hidden">
 					<form action="">
-						<input type="text" id="task-name" placeholder="Task name" autocomplete="off" required>
-						<input type="text" id="task-description" placeholder="Description" maxlength="40">
+						<input type="text" id="task-name" placeholder="Task name" autocomplete="off" required />
+						<input type="text" id="task-description" placeholder="Description" maxlength="40" />
 						<div class="bottom-tabs">
 							<div class="option-container">
-								<div class="due-date-container"><img src="../src/assets/calendar.svg" alt="calendar svg"><p>Due date</p></div>
+								<div class="due-date-container">
+									<div class="date-picker-container">
+										<input type="date" id="date-input" placeholder="Select a date" />
+									</div>										
+									<p>Due date</p>
+								</div>
 								<div class="priority-container" tabindex="0">
-									<img src="../src/assets/flag.svg" alt="flag svg"><p>Priority</p>
+									<img src="../src/assets/flag.svg" alt="flag svg" />
+									<p>Priority</p>
 									<div class="dropdown-container">
 										<ul class="dropdown">
-											<li data-priority="high-priority"><img src="../src/assets/flag-fill.svg" alt="flag svg"><p>High Priority!!</p></li>
-											<li data-priority="medium-priority"> <img src="../src/assets/flag-fill.svg" alt="flag svg"><p>Medium</p></li>
-											<li data-priority="low-priority"><img src="../src/assets/flag-fill.svg" alt="flag svg"><p>Low Priority</p></li>
+											<li data-priority="high-priority">
+												<img src="../src/assets/flag-fill.svg" alt="flag svg" />
+												<p>High Priority!!</p>
+											</li>
+											<li data-priority="medium-priority">
+												<img src="../src/assets/flag-fill.svg" alt="flag svg" />
+												<p>Medium</p>
+											</li>
+											<li data-priority="low-priority">
+												<img src="../src/assets/flag-fill.svg" alt="flag svg" />
+												<p>Low Priority</p>
+											</li>
 										</ul>
 									</div>
 								</div>
 							</div>
 							<div class="submit-close-container mobile">
-								<img src="../src/assets/cancel.svg" class="cancel-task-btn" alt="cancel">
-								<img src="../src/assets/send.svg" class="submit-task-btn" alt="send">
+								<img src="../src/assets/cancel.svg" class="cancel-task-btn" alt="cancel" />
+								<img src="../src/assets/send.svg" class="submit-task-btn" alt="send" />
 							</div>
 							<div class="submit-close-container desktop">
-								<button type='button' class="cancel-task-btn">Cancel</button>
-								<button type='submit' class="submit-task-btn">Add Tasks</button>
+								<button type="button" class="cancel-task-btn">Cancel</button>
+								<button type="submit" class="submit-task-btn">Add Tasks</button>
 							</div>
 						</div>
 					</form>
@@ -91,7 +105,7 @@
 				</header>
 				<form id="modal-form" action="">
 					<label for="project-name">Name:</label>
-					<input type="text" name="projectName" id="project-name" required>
+					<input type="text" name="projectName" id="project-name" required />
 					<div class="modal-btn-container">
 						<button type="submit" class="modal-project-btn">Add|Edit</button>
 						<button type="button" class="modal-cancel-btn">Cancel</button>
