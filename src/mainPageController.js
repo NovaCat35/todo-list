@@ -2,6 +2,7 @@ import handleModalRequest from "./modalHandler.js";
 import { projectList } from "./projectController.js";
 import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
+import formatDate from "./dateController.js";
 
 /**
  * @param {title of navTab} navTabInfo
@@ -77,8 +78,8 @@ function displayTask(projectName) {
 			// DUE DATE
 			const taskDate = createElement("p", "task-date");
 			if (task.date) {
-				console.log(task.date);
-				taskDate.textContent = task.date;
+            const formattedDate = formatDate(task.date)
+				taskDate.textContent = formattedDate;
 				taskInnerRightContainer.appendChild(taskDate);
 			}
 
@@ -151,6 +152,7 @@ function createFlagBaseOnPriority(flagImg, priorityInfo) {
 			break;
 		default:
 			removeAllFlagPriority(flagImg);
+         flagImg.src = priorityNeutralFlag;
 			flagImg.classList.add("flag-none");
 	}
 }

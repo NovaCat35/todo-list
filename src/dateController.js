@@ -1,12 +1,9 @@
-// import datepicker from 'datepicker'; // Import the datepicker library
+import { format } from 'date-fns'
 
-// const dateInput = document.getElementById('date-input');
-
-// // Initialize the date picker
-// datepicker(dateInput, {
-//   // Options and configuration go here
-//   format: 'yyyy-MM-dd', // Format of the selected date
-//   position: 'tr', // Position of the date picker relative to the input field
-//   showAllDates: true, // Display all days of the month, not just the current month
-// });
-
+// Format the default raw string value "mm-dd-yyyy" to --> MMMM d, yyyy
+export default function formatDate(rawDate) {
+   console.log(rawDate)
+   const selectedDate = new Date(rawDate); // Convert the value to a Date object
+   const formattedDate = format(selectedDate, 'MMMM d, yyyy');
+   return formattedDate;
+}
