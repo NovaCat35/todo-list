@@ -4,7 +4,7 @@ import './styles/task.css';
 import './styles/date.css';
 
 import { addNewProject } from "./projectController.js";
-import fillMainInfo from './mainPageController.js'
+import {displayMainInfo} from './mainPageController.js'
 import initWebsite from './initWebsite.js'
 
 const hamburger = document.querySelector('.hamburger');
@@ -13,7 +13,7 @@ const newProjectBtn = document.querySelector('.new-project-btn')
 const navTabs = document.querySelectorAll('.navtab');
 
 initWebsite();
-navTabs.forEach(tab =>  tab.addEventListener('click', (event) => fillMainInfo(event, 'mainTabInfo')))
+navTabs.forEach(tab =>  tab.addEventListener('click', (event) => displayMainInfo(event, 'mainTabInfo')))
 
 hamburger.addEventListener('click', () => {
    hamburger.classList.toggle('active');

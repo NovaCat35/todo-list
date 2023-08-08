@@ -36,6 +36,10 @@ header {
 h1 {
 	margin: 0;
 }
+img#todo-icon{
+	display: none;
+	width: 50px;
+}
 /** Hamburger **/
 .hamburger {
 	margin-left: auto;
@@ -159,9 +163,10 @@ main .side-nav.active {
 	padding: 10px;
 	width: 80%;
 }
-.navtab:hover,
+
+.navtab:focus,
 .navtab:hover {
-	border: 2px solid var(--nav-tab-focus-color);
+	outline: 2px solid var(--nav-tab-focus-color); 
 }
 /* Project SideNav  */
 .project-header {
@@ -260,6 +265,11 @@ footer img:hover {
 	/* HEADER */
 	header {
 		gap: 30px;
+		padding: 15px 20px;
+	}
+	img#todo-icon{
+		display: block;
+		margin-right: -15px;
 	}
 	.search-container {
 		width: 30vw;
