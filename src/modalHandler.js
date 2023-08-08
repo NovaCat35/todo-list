@@ -1,5 +1,5 @@
 import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
-import { displayTask, closeTaskModal } from "./mainPageController.js";
+import { displayTask, closeTaskModal, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority } from "./mainPageController.js";
 import datepicker from "./dateController.js";
 
 const modalProject = document.querySelector(".project-modal-background");
@@ -8,8 +8,10 @@ const taskForm = document.querySelector(".task-modal-container form");
 const addProjectBtn = document.querySelector(".modal-project-btn");
 const cancelBtn = document.querySelector(".modal-cancel-btn");
 const priorityBtn = document.querySelector(".priority-container");
+const priorityBtnTag = document.querySelector(".priority-container p");
 const priorityDropdown = document.querySelector(".dropdown-container");
 const priorityDropdownItems = document.querySelectorAll(".dropdown li");
+const flagSrc = document.querySelector('.priority-container img')
 const dueDateBtn = document.querySelector(".due-date-container");
 const dateInput = document.getElementById("date-input");
 const dueDateTag = document.querySelector('.due-date-container p')
@@ -23,10 +25,7 @@ let editMode = false;
 // modalElement being the modalProjectContainer or the modalTaskContain
 export default function handleModalRequest(modalType, projectId = null) {
 	// Setup initial values
-	targetProjectName = projectId;
-	selectedPriority = null;
-	selectedDate = null
-	dueDateTag.textContent = 'Due Date'
+	resetModal(projectId)
 
 	switch (modalType) {
 		case "addProject":
@@ -118,6 +117,10 @@ function clearProjectModal() {
 	modalProject.classList.add("hidden");
 }
 
+
+
+
+// ***********************************************************************
 // ************** TASK MODAL **************
 function addTaskModalHandler() {
 	const addTaskBtnMobile = document.querySelector(".submit-close-container.mobile .submit-task-btn");
@@ -147,8 +150,10 @@ function addTaskModalHandler() {
 
 		function priorityHandler(event) {
 			selectedPriority = event.target.closest("[data-priority]").getAttribute("data-priority");
+			createFlagBaseOnPriority(flagSrc, selectedPriority)
+			priorityBtnTag.textContent = selectedPriority;
 			priorityDropdown.classList.remove("active");
-			event.stopPropagation(); // Stop event propagation to parent (i.e. priorityDropdown)
+			event.stopPropagation(); // Stop event propagation to parent (i.e. priorityDropdown since it has its own listener)
 		}
 
 		let listenerOnDatepicker = false;
@@ -215,4 +220,14 @@ function addListenerToOpenClosePriority() {
 		});
 		priorityListenerAdded = true;
 	}
+}
+
+function resetModal(projectId){
+	targetProjectName = projectId;
+	selectedPriority = null;
+	selectedDate = null
+	dueDateTag.textContent = 'Due Date'
+	priorityBtnTag.textContent = 'Priority';
+	flagSrc.src = priorityNeutralFlag;
+	removeAllFlagPriority(flagSrc);
 }

@@ -8,6 +8,7 @@
 	--priority-high-color: invert(23%) sepia(89%) saturate(6106%) hue-rotate(344deg) brightness(93%) contrast(114%);
 	--priority-medium-color: invert(69%) sepia(42%) saturate(3413%) hue-rotate(5deg) brightness(112%) contrast(98%);
 	--priority-low-color: invert(65%) sepia(87%) saturate(1264%) hue-rotate(136deg) brightness(103%) contrast(98%);
+	--priority-none-color: invert(0%) sepia(1%) saturate(7499%) hue-rotate(338deg) brightness(93%) contrast(95%);
 }
 
 /* PROJECT MODAL */

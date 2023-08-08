@@ -44,13 +44,14 @@
 img.priority-flag {
 	width: 30px;
 }
-img.priority-flag.flag-high {
+/* Fills in flag in modal and tasks */
+img.flag-high {
 	filter: var(--priority-high-color);
 }
-img.priority-flag.flag-medium {
+img.flag-medium {
 	filter: var(--priority-medium-color);
 }
-img.priority-flag.flag-low {
+img.flag-low {
 	filter: var(--priority-low-color);
 }
 

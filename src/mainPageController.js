@@ -1,6 +1,7 @@
 import handleModalRequest from "./modalHandler.js";
 import { projectList } from "./projectController.js";
-import priorityFlag from "./assets/flag-fill.svg";
+import priorityFilledFlag from "./assets/flag-fill.svg";
+import priorityNeutralFlag from "./assets/flag.svg";
 
 /**
  * @param {title of navTab} navTabInfo
@@ -69,22 +70,9 @@ function displayTask(projectName) {
 
 			// PRIORITY
 			const taskFlagImg = createElement("img", "priority-flag");
-			taskFlagImg.src = priorityFlag;
 			const taskPriority = task.priority;
-			switch (taskPriority) {
-				case "high-priority":
-					taskFlagImg.classList.add("flag-high");
-					break;
-				case "medium-priority":
-					taskFlagImg.classList.add("flag-medium");
-					break;
-				case "low-priority":
-					taskFlagImg.classList.add("flag-low");
-					break;
-				default:
-					taskFlagImg.classList.add("flag-none");
-			}
-			taskInnerRightContainer.appendChild(taskFlagImg); //add the final choosen priority flag
+			createFlagBaseOnPriority(taskFlagImg, taskPriority);
+			taskInnerRightContainer.appendChild(taskFlagImg); //add the final chosen priority flag
 
 			// DUE DATE
 			const taskDate = createElement("p", "task-date");
@@ -144,4 +132,33 @@ function createElement(type, className) {
 	return element;
 }
 
-export { displayMainInfo, displayTask, closeTaskModal };
+function createFlagBaseOnPriority(flagImg, priorityInfo) {
+	switch (priorityInfo) {
+		case "high-priority":
+			removeAllFlagPriority(flagImg);
+			flagImg.classList.add("flag-high");
+			flagImg.src = priorityFilledFlag;
+			break;
+		case "medium-priority":
+			removeAllFlagPriority(flagImg);
+			flagImg.classList.add("flag-medium");
+			flagImg.src = priorityFilledFlag;
+			break;
+		case "low-priority":
+			removeAllFlagPriority(flagImg);
+			flagImg.classList.add("flag-low");
+			flagImg.src = priorityFilledFlag;
+			break;
+		default:
+			removeAllFlagPriority(flagImg);
+			flagImg.classList.add("flag-none");
+	}
+}
+
+function removeAllFlagPriority(flagImg) {
+	flagImg.classList.remove("flag-high");
+	flagImg.classList.remove("flag-medium");
+	flagImg.classList.remove("flag-low");
+}
+
+export { displayMainInfo, displayTask, closeTaskModal, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority };
