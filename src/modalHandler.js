@@ -1,5 +1,6 @@
 import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
 import { displayTask, closeTaskModal } from "./mainPageController.js";
+import datepicker from "./dateController.js";
 
 const modalProject = document.querySelector(".project-modal-background");
 const projectForm = document.querySelector(".project-modal-container form");
@@ -9,6 +10,8 @@ const cancelBtn = document.querySelector(".modal-cancel-btn");
 const priorityBtn =  document.querySelector(".priority-container");
 const priorityDropdown = document.querySelector(".dropdown-container");
 const priorityDropdownItems = document.querySelectorAll(".dropdown li");
+const dueDateBtn = document.querySelector(".due-date-container");
+const dateInput = document.getElementById("date-input");
 
 let targetProjectName = null;
 let selectedPriority = null;
@@ -144,11 +147,16 @@ function addTaskModalHandler() {
 			event.stopPropagation(); // Stop event propagation to parent (i.e. priorityDropdown)
 		}
 
+		function dateHandler() {
+			dateInput.showPicker(); //shows the input's dropdown calendar picker
+		}
+
 		return {
 			submitHandler,
 			submitMobileHandler,
 			cancelHandler,
 			priorityHandler,
+			dateHandler,
 		};
 	}
 
@@ -160,6 +168,8 @@ function addTaskModalHandler() {
 	priorityDropdownItems.forEach((priority) => {
 		priority.removeEventListener("click", eventListeners.priorityHandler);
 	});
+	dueDateBtn.removeEventListener("click", eventListeners.dateHandler);
+
 
 	// Add the event listeners with the updated targetProjectName
 	const newEventListeners = createEventListeners();
@@ -169,6 +179,7 @@ function addTaskModalHandler() {
 	priorityDropdownItems.forEach((priority) => {
 		priority.addEventListener("click", newEventListeners.priorityHandler);
 	});
+	dueDateBtn.addEventListener("click", newEventListeners.dateHandler);
 }
 
 function updateTaskToProject() {
@@ -188,7 +199,6 @@ let priorityListenerAdded = false;
 function addListenerToOpenClosePriority(){
 	if (!priorityListenerAdded) {
 		priorityBtn.addEventListener('click', () => {
-			console.log('wth')
 			priorityDropdown.classList.toggle('active');
 		});
 		priorityListenerAdded = true;

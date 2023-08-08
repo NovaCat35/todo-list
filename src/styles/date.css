@@ -1,0 +1,28 @@
+/* DUE DATE PICKER CONTAINER (The main container styling in modal.css */
+
+.date-picker-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+/* Hide the default input field */
+.date-picker-container input[type="date"] {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 20px; 
+	height: 20px;
+	padding: 0;
+	border: none;
+	background: transparent;
+	outline: none;
+}
+
+/* Style the calendar icon (Set background to cover entire input) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+	background: url("../assets/calendar.svg") center/cover no-repeat; /* Replace with your icon path */
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
