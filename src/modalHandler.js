@@ -7,14 +7,16 @@ const projectForm = document.querySelector(".project-modal-container form");
 const taskForm = document.querySelector(".task-modal-container form");
 const addProjectBtn = document.querySelector(".modal-project-btn");
 const cancelBtn = document.querySelector(".modal-cancel-btn");
-const priorityBtn =  document.querySelector(".priority-container");
+const priorityBtn = document.querySelector(".priority-container");
 const priorityDropdown = document.querySelector(".dropdown-container");
 const priorityDropdownItems = document.querySelectorAll(".dropdown li");
 const dueDateBtn = document.querySelector(".due-date-container");
 const dateInput = document.getElementById("date-input");
+const dueDateTag = document.querySelector('.due-date-container p')
 
 let targetProjectName = null;
 let selectedPriority = null;
+let selectedDate = null
 let editMode = false;
 
 // ************** PROJECT MODAL **************
@@ -23,6 +25,8 @@ export default function handleModalRequest(modalType, projectId = null) {
 	// Setup initial values
 	targetProjectName = projectId;
 	selectedPriority = null;
+	selectedDate = null
+	dueDateTag.textContent = 'Due Date'
 
 	switch (modalType) {
 		case "addProject":
@@ -119,7 +123,7 @@ function addTaskModalHandler() {
 	const addTaskBtnMobile = document.querySelector(".submit-close-container.mobile .submit-task-btn");
 	const cancelTaskBtn = document.querySelectorAll(".cancel-task-btn");
 
-	addListenerToOpenClosePriority()
+	addListenerToOpenClosePriority();
 
 	// Function to create event listeners with the current targetProjectName
 	function createEventListeners() {
@@ -142,13 +146,22 @@ function addTaskModalHandler() {
 		}
 
 		function priorityHandler(event) {
-			selectedPriority = event.target.closest("[data-priority]").getAttribute('data-priority');
-			priorityDropdown.classList.remove('active');
+			selectedPriority = event.target.closest("[data-priority]").getAttribute("data-priority");
+			priorityDropdown.classList.remove("active");
 			event.stopPropagation(); // Stop event propagation to parent (i.e. priorityDropdown)
 		}
 
+		let listenerOnDatepicker = false;
 		function dateHandler() {
 			dateInput.showPicker(); //shows the input's dropdown calendar picker
+			if (!listenerOnDatepicker) {
+				dateInput.addEventListener("input", () => {
+					selectedDate = dateInput.value;
+					dueDateTag.textContent = selectedDate
+					console.log("Selected Date:", selectedDate);
+					listenerOnDatepicker = true;
+				});
+			}
 		}
 
 		return {
@@ -170,7 +183,6 @@ function addTaskModalHandler() {
 	});
 	dueDateBtn.removeEventListener("click", eventListeners.dateHandler);
 
-
 	// Add the event listeners with the updated targetProjectName
 	const newEventListeners = createEventListeners();
 	taskForm.addEventListener("submit", newEventListeners.submitHandler);
@@ -186,9 +198,9 @@ function updateTaskToProject() {
 	const targetProjectInfo = projectList.find((project) => project.title == targetProjectName);
 	const taskTitle = document.getElementById("task-name").value;
 	const taskDescription = document.getElementById("task-description").value;
-	// const taskDueDate = ...
+	const taskDueDate = selectedDate;
 	const taskPriority = selectedPriority;
-	targetProjectInfo.setTask(taskTitle, taskDescription, taskPriority);
+	targetProjectInfo.setTask(taskTitle, taskDescription, taskPriority, taskDueDate);
 
 	// Update the task that shows up in main page
 	displayTask(targetProjectName);
@@ -196,10 +208,10 @@ function updateTaskToProject() {
 }
 
 let priorityListenerAdded = false;
-function addListenerToOpenClosePriority(){
+function addListenerToOpenClosePriority() {
 	if (!priorityListenerAdded) {
-		priorityBtn.addEventListener('click', () => {
-			priorityDropdown.classList.toggle('active');
+		priorityBtn.addEventListener("click", () => {
+			priorityDropdown.classList.toggle("active");
 		});
 		priorityListenerAdded = true;
 	}

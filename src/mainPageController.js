@@ -50,10 +50,10 @@ function displayTask(projectName) {
 	if (targetProjectInfo) {
 		targetProjectInfo.getTasks().forEach((task) => {
 			const taskInfoContainer = createElement("div", "task-info-container");
-         const taskInnerTopContainer = createElement("div", "task-top-container");
-         const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
-         const taskInnerRightContainer = createElement("div", "task-inner-right-container");
-         const taskDescrContainer = createElement("div", "task-descr-container");
+			const taskInnerTopContainer = createElement("div", "task-top-container");
+			const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
+			const taskInnerRightContainer = createElement("div", "task-inner-right-container");
+			const taskDescrContainer = createElement("div", "task-descr-container");
 
 			// TITLE
 			const taskTitle = createElement("p", "task-title");
@@ -69,7 +69,7 @@ function displayTask(projectName) {
 
 			// PRIORITY
 			const taskFlagImg = createElement("img", "priority-flag");
-         taskFlagImg.src = priorityFlag
+			taskFlagImg.src = priorityFlag;
 			const taskPriority = task.priority;
 			switch (taskPriority) {
 				case "high-priority":
@@ -84,13 +84,21 @@ function displayTask(projectName) {
 				default:
 					taskFlagImg.classList.add("flag-none");
 			}
-			taskInnerRightContainer.appendChild(taskFlagImg);
+			taskInnerRightContainer.appendChild(taskFlagImg); //add the final choosen priority flag
 
-         // Adding final compiled task to taskList!
-         taskInnerTopContainer.appendChild(taskInnerLeftContainer)
-         taskInnerTopContainer.appendChild(taskInnerRightContainer)
-         taskInfoContainer.appendChild(taskInnerTopContainer)
-         taskInfoContainer.appendChild(taskDescrContainer)
+			// DUE DATE
+			const taskDate = createElement("p", "task-date");
+			if (task.date) {
+				console.log(task.date);
+				taskDate.textContent = task.date;
+				taskInnerRightContainer.appendChild(taskDate);
+			}
+
+			// Adding final compiled task to taskList!
+			taskInnerTopContainer.appendChild(taskInnerLeftContainer);
+			taskInnerTopContainer.appendChild(taskInnerRightContainer);
+			taskInfoContainer.appendChild(taskInnerTopContainer);
+			taskInfoContainer.appendChild(taskDescrContainer);
 			taskList.appendChild(taskInfoContainer);
 		});
 	}
