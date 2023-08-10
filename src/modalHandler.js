@@ -7,6 +7,7 @@ const projectForm = document.querySelector(".project-modal-container form");
 const taskForm = document.querySelector(".task-modal-container form");
 const addProjectBtn = document.querySelector(".modal-project-btn");
 const cancelBtn = document.querySelector(".modal-cancel-btn");
+const errorText = document.getElementById("errorText");
 const priorityBtn = document.querySelector(".priority-container");
 const priorityBtnTag = document.querySelector(".priority-container p");
 const priorityDropdown = document.querySelector(".dropdown-container");
@@ -137,7 +138,10 @@ function addTaskModalHandler() {
 
 		function submitMobileHandler() {
 			if (taskForm.checkValidity()) {
+				errorText.style.display = "none"; // Hide error message
 				updateTaskToProject();
+			} else {
+				errorText.style.display = "block"; // Show error message
 			}
 		}
 
@@ -148,7 +152,7 @@ function addTaskModalHandler() {
 		function priorityHandler(event) {
 			selectedPriority = event.target.closest("[data-priority]").getAttribute("data-priority");
 			createFlagBaseOnPriority(flagSrc, selectedPriority);
-			priorityBtnTag.textContent = selectedPriority;
+			priorityBtnTag.textContent = priorityType(selectedPriority);
 			priorityDropdown.classList.remove("active");
 			event.stopPropagation(); // Stop event propagation to parent (i.e. priorityDropdown since it has its own listener)
 		}
@@ -221,6 +225,7 @@ function addListenerToOpenClosePriority() {
 }
 
 function resetModal(projectId) {
+	errorText.style.display = "none"; // Hide error message
 	targetProjectName = projectId;
 	selectedPriority = null;
 	selectedDate = null;
@@ -228,4 +233,16 @@ function resetModal(projectId) {
 	priorityBtnTag.textContent = "Priority";
 	flagSrc.src = priorityNeutralFlag;
 	removeAllFlagPriority(flagSrc);
+}
+
+function priorityType(selectedPriority) {
+	if (selectedPriority == 'high-priority') {
+		return 'High';
+	} 
+	if (selectedPriority == 'medium-priority') {
+		return 'Medium';
+	} 
+	if (selectedPriority == 'low-priority') {
+		return 'Low';
+	} 
 }

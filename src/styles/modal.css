@@ -84,6 +84,13 @@
 	appearance: none;
 	border: none;
 }
+.task-modal-container .error-message {
+	margin-left: 5px;
+	margin-top: -10px;
+	width: 100%;
+	color: red;
+	display: none;
+}
 .task-modal-container .bottom-tabs {
 	width: 100%;
 	display: flex;
