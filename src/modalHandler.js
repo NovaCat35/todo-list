@@ -1,6 +1,6 @@
 import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
-import { displayTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList} from "./mainPageController.js";
-import formatDate from "./dateController.js";
+import { getProjectTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList} from "./mainPageController.js";
+import {formatDate} from "./dateController.js";
 
 const modalProject = document.querySelector(".project-modal-background");
 const projectForm = document.querySelector(".project-modal-container form");
@@ -209,7 +209,7 @@ function updateTaskToProject() {
 
 	// Update the task that shows up in main page
 	clearTaskList()
-	displayTask(targetProjectName);
+	getProjectTask(targetProjectName);
 	closeTaskModal();
 	showAddTaskBtn();
 }

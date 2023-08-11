@@ -2,7 +2,7 @@ import handleModalRequest from "./modalHandler.js";
 import { projectList } from "./projectController.js";
 import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
-import formatDate from "./dateController.js";
+import { formatDate, getTodaysDate } from "./dateController.js";
 
 const taskList = document.querySelector(".task-list");
 const addTaskBtn = document.querySelector(".add-task-btn");
@@ -36,63 +36,66 @@ function displayMainInfo(event, navTabInfo) {
 		if (projectElement) {
 			targetName = projectElement.getAttribute("data-project-id");
 			clearTaskList();
-			displayTask(targetName);
+			getProjectTask(targetName);
 			showAddTaskBtn();
 		}
 	}
 	// Show title page
 	mainTitle.textContent = targetName;
-
 	// Hide task modal if open
 	closeTaskModal();
 }
 
-function displayTask(projectName) {
+// This doesn't display the individual task, rather find the target project and get the task to be displayed
+function getProjectTask(projectName) {
 	const targetProjectInfo = projectList.find((project) => project.title == projectName);
 
 	// Loop through tasks and create task elements
 	if (targetProjectInfo) {
-		targetProjectInfo.getTasks().forEach((task) => {
-			const taskInfoContainer = createElement("div", "task-info-container");
-			const taskInnerTopContainer = createElement("div", "task-top-container");
-			const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
-			const taskInnerRightContainer = createElement("div", "task-inner-right-container");
-			const taskDescrContainer = createElement("div", "task-descr-container");
-
-			// TITLE
-			const taskTitle = createElement("p", "task-title");
-			taskTitle.textContent = task.title;
-			taskInnerLeftContainer.appendChild(taskTitle);
-
-			// DESCRIPTION
-			const taskDescription = createElement("p", "task-description");
-			if (task.description) {
-				taskDescription.textContent = task.description;
-				taskDescrContainer.appendChild(taskDescription);
-			}
-
-			// PRIORITY
-			const taskFlagImg = createElement("img", "priority-flag");
-			const taskPriority = task.priority;
-			createFlagBaseOnPriority(taskFlagImg, taskPriority);
-			taskInnerRightContainer.appendChild(taskFlagImg); //add the final chosen priority flag
-
-			// DUE DATE
-			const taskDate = createElement("p", "task-date");
-			if (task.date) {
-				const formattedDate = formatDate(task.date);
-				taskDate.textContent = formattedDate;
-				taskInnerRightContainer.appendChild(taskDate);
-			}
-
-			// Adding final compiled task to taskList!
-			taskInnerTopContainer.appendChild(taskInnerLeftContainer);
-			taskInnerTopContainer.appendChild(taskInnerRightContainer);
-			taskInfoContainer.appendChild(taskInnerTopContainer);
-			taskInfoContainer.appendChild(taskDescrContainer);
-			taskList.appendChild(taskInfoContainer);
-		});
+		targetProjectInfo.getTasks().forEach((task) => displayTask(task));
 	}
+}
+
+// This will take the individual task from @param and create a list base on its info
+function displayTask(task) {
+	const taskInfoContainer = createElement("div", "task-info-container");
+	const taskInnerTopContainer = createElement("div", "task-top-container");
+	const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
+	const taskInnerRightContainer = createElement("div", "task-inner-right-container");
+	const taskDescrContainer = createElement("div", "task-descr-container");
+
+	// TITLE
+	const taskTitle = createElement("p", "task-title");
+	taskTitle.textContent = task.title;
+	taskInnerLeftContainer.appendChild(taskTitle);
+
+	// DESCRIPTION
+	const taskDescription = createElement("p", "task-description");
+	if (task.description) {
+		taskDescription.textContent = task.description;
+		taskDescrContainer.appendChild(taskDescription);
+	}
+
+	// PRIORITY
+	const taskFlagImg = createElement("img", "priority-flag");
+	const taskPriority = task.priority;
+	createFlagBaseOnPriority(taskFlagImg, taskPriority);
+	taskInnerRightContainer.appendChild(taskFlagImg); //add the final chosen priority flag
+
+	// DUE DATE
+	const taskDate = createElement("p", "task-date");
+	if (task.date) {
+		const formattedDate = formatDate(task.date);
+		taskDate.textContent = formattedDate;
+		taskInnerRightContainer.appendChild(taskDate);
+	}
+
+	// Adding final compiled task to taskList!
+	taskInnerTopContainer.appendChild(taskInnerLeftContainer);
+	taskInnerTopContainer.appendChild(taskInnerRightContainer);
+	taskInfoContainer.appendChild(taskInnerTopContainer);
+	taskInfoContainer.appendChild(taskDescrContainer);
+	taskList.appendChild(taskInfoContainer);
 }
 
 // -----------------------
@@ -104,7 +107,6 @@ function showAddTaskBtn() {
 
 function removeAddTaskBtn() {
 	addTaskBtn.classList.add("hidden");
-	console.log("wth");
 	addTaskBtn.removeEventListener("click", addTaskClickHandler);
 }
 
@@ -166,10 +168,21 @@ function removeAllFlagPriority(flagImg) {
 	flagImg.classList.remove("flag-low");
 }
 
+function clearTaskList() {
+	taskList.textContent = "";
+}
+
+/**
+ *	@param {main tab's specific name} mainTabName
+ *	We assign specific roles here base on the tab's name
+ */
 function displayProjectBaseOnChoice(mainTabName) {
 	switch (mainTabName) {
 		case "All":
 			displayAllProject();
+			break;
+		case "Today":
+			displayTodayProject();
 			break;
 		default:
 			break;
@@ -178,15 +191,34 @@ function displayProjectBaseOnChoice(mainTabName) {
 
 function displayAllProject() {
 	clearTaskList();
-	for (let project = 0; project < projectList.length; project++) {
-		const projectName = projectList[project].title;
-		console.log(projectName);
-		displayTask(projectName);
+	for (let i = 0; i < projectList.length; i++) {
+		const projectName = projectList[i].title;
+		getProjectTask(projectName);
 	}
 }
 
-function clearTaskList() {
-	taskList.textContent = "";
+function filterTaskByDate(selectedDate, project) {
+	const tasks = project.getTasks();
+	console.log(`taskslist: ${tasks[0]}`)
+	const selectedTaskList = tasks.filter((task) => task.date === selectedDate);
+	return selectedTaskList;
 }
 
-export { displayMainInfo, displayTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList };
+function displayTodayProject() {
+	const today = getTodaysDate();
+	let selectedTaskList = [];
+	clearTaskList();
+
+	// Filter for task that match today's date
+	for (let i = 0; i < projectList.length; i++) {
+		selectedTaskList = selectedTaskList.concat(filterTaskByDate(today, projectList[i]));
+	}
+
+	console.log("Filtered Projects:", selectedTaskList);
+
+	for (let k = 0; k < selectedTaskList.length; k++) {
+		displayTask(selectedTaskList[k]);
+	}
+}
+
+export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList };
