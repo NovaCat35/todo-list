@@ -182,7 +182,10 @@ function displayProjectBaseOnChoice(mainTabName) {
 			displayAllProject();
 			break;
 		case "Today":
-			displayTodayProject();
+			displayTodayTasks();
+			break;
+		case "Upcoming":
+			displayUpcomingTasks()
 			break;
 		default:
 			break;
@@ -197,28 +200,62 @@ function displayAllProject() {
 	}
 }
 
-function filterTaskByDate(selectedDate, project) {
-	const tasks = project.getTasks();
-	console.log(`taskslist: ${tasks[0]}`)
-	const selectedTaskList = tasks.filter((task) => task.date === selectedDate);
-	return selectedTaskList;
-}
 
-function displayTodayProject() {
+function displayTodayTasks() {
 	const today = getTodaysDate();
-	let selectedTaskList = [];
+	let todayTaskList = [];
 	clearTaskList();
+
+	function filterTaskByToday(todayDate, project) {
+		const tasks = project.getTasks();
+		const selectedTaskList = tasks.filter((task) => task.date === todayDate);
+		return selectedTaskList;
+	}
 
 	// Filter for task that match today's date
 	for (let i = 0; i < projectList.length; i++) {
-		selectedTaskList = selectedTaskList.concat(filterTaskByDate(today, projectList[i]));
+		const filteredTasksList = filterTaskByToday(today, projectList[i])
+		todayTaskList = todayTaskList.concat(filteredTasksList);
 	}
 
-	console.log("Filtered Projects:", selectedTaskList);
+	console.log("Filtered Projects:", todayTaskList);
 
-	for (let k = 0; k < selectedTaskList.length; k++) {
-		displayTask(selectedTaskList[k]);
+	for (let k = 0; k < todayTaskList.length; k++) {
+		displayTask(todayTaskList[k]);
 	}
 }
+
+function displayUpcomingTasks() {
+	const today = getTodaysDate(); // Get today's date as a string in the format "yyyy-mm-dd"
+	let upcomingTaskList = [];
+	clearTaskList();
+
+	function filterTaskByUpcoming(todayDate, project) {
+		const projectTasks = project.getTasks()
+		const upcomingTasks = projectTasks.filter((task) => {
+			if (task.date) {
+				const taskDate = new Date(task.date); // Convert task date to Date object
+				const todayDate = new Date(today); // Convert today's date string to Date object
+				return taskDate > todayDate;
+			}
+			return false;
+		});
+		return upcomingTasks;
+	}
+
+	// Filter for tasks that have due dates greater than or equal to today
+	for (let i = 0; i < projectList.length; i++) {
+		const filteredTasksList = filterTaskByUpcoming(today, projectList[i])
+		upcomingTaskList = upcomingTaskList.concat(filteredTasksList);
+	}
+
+	console.log("Upcoming Tasks:", upcomingTaskList);
+
+	for (let k = 0; k < upcomingTaskList.length; k++) {
+		displayTask(upcomingTaskList[k]);
+	}
+}
+
+
 
 export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList };
