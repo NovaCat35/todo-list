@@ -1,6 +1,6 @@
 export default function initWebsite() {
    const mainTitle = document.querySelector(".main-title");
-   const allNavTab = document.getElementById("all");
+   const allNavTab = document.getElementById("All");
 
    // Set title to be on "All" main tab
    mainTitle.textContent = 'All'

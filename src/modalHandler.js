@@ -1,5 +1,5 @@
 import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
-import { displayTask, closeTaskModal, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority } from "./mainPageController.js";
+import { displayTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList} from "./mainPageController.js";
 import formatDate from "./dateController.js";
 
 const modalProject = document.querySelector(".project-modal-background");
@@ -38,7 +38,6 @@ export default function handleModalRequest(modalType, projectId = null) {
 			editProject(projectId);
 			break;
 		case "addTask":
-			console.log(`project@handler: ${projectId}`);
 			addTaskModalHandler(projectId);
 		default:
 			break;
@@ -131,7 +130,6 @@ function addTaskModalHandler() {
 		function submitHandler(event) {
 			event.preventDefault();
 			if (taskForm.checkValidity()) {
-				console.log(`Testing: ${targetProjectName}`);
 				updateTaskToProject();
 			}
 		}
@@ -147,6 +145,7 @@ function addTaskModalHandler() {
 
 		function cancelHandler() {
 			closeTaskModal();
+			showAddTaskBtn();
 		}
 
 		function priorityHandler(event) {
@@ -165,7 +164,6 @@ function addTaskModalHandler() {
 					selectedDate = dateInput.value;
 					const formattedDate = formatDate(selectedDate);
 					dueDateTag.textContent = formattedDate;
-					console.log("Selected Date:", selectedDate);
 					listenerOnDatepicker = true;
 				});
 			}
@@ -210,8 +208,10 @@ function updateTaskToProject() {
 	targetProjectInfo.setTask(taskTitle, taskDescription, taskPriority, taskDueDate);
 
 	// Update the task that shows up in main page
+	clearTaskList()
 	displayTask(targetProjectName);
 	closeTaskModal();
+	showAddTaskBtn();
 }
 
 let priorityListenerAdded = false;

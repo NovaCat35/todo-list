@@ -4,6 +4,10 @@ import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
 import formatDate from "./dateController.js";
 
+const taskList = document.querySelector(".task-list");
+const addTaskBtn = document.querySelector(".add-task-btn");
+let targetName = null;
+
 /**
  * @param {title of navTab} navTabInfo
  * Function is called when side nav tabs are clicked.
@@ -15,38 +19,36 @@ function displayMainInfo(event, navTabInfo) {
 	const mainTitle = document.querySelector(".main-title");
 	const sideNavigation = document.querySelector(".side-nav");
 	const hamburger = document.querySelector(".hamburger");
-	let targetName = null;
 
 	// Collapses the side-nav & hamburger menu if in mobile mode
 	sideNavigation.classList.remove("active");
 	hamburger.classList.remove("active");
 
-	// Checks if displaying the main nav title or project's title
+	// Checks if displaying the main nav title
 	if (navTabInfo == "mainTabInfo") {
+		removeAddTaskBtn();
 		targetName = event.target.id;
-	} else {
-		// Find the closest ancestor with data-project-id attribute
+		displayProjectBaseOnChoice(targetName);
+	}
+	// Otherwise, we selected project's title
+	else {
 		const projectElement = event.target.closest("[data-project-id]");
-
 		if (projectElement) {
 			targetName = projectElement.getAttribute("data-project-id");
-			// IF PROJECT : display tasks & show "Add Task"
+			clearTaskList();
 			displayTask(targetName);
-			addTaskBtn(targetName);
+			showAddTaskBtn();
 		}
 	}
 	// Show title page
 	mainTitle.textContent = targetName;
+
 	// Hide task modal if open
 	closeTaskModal();
 }
 
 function displayTask(projectName) {
-	const taskList = document.querySelector(".task-list");
 	const targetProjectInfo = projectList.find((project) => project.title == projectName);
-
-	// Clear the existing task list
-	taskList.textContent = "";
 
 	// Loop through tasks and create task elements
 	if (targetProjectInfo) {
@@ -78,7 +80,7 @@ function displayTask(projectName) {
 			// DUE DATE
 			const taskDate = createElement("p", "task-date");
 			if (task.date) {
-            const formattedDate = formatDate(task.date)
+				const formattedDate = formatDate(task.date);
 				taskDate.textContent = formattedDate;
 				taskInnerRightContainer.appendChild(taskDate);
 			}
@@ -94,37 +96,38 @@ function displayTask(projectName) {
 }
 
 // -----------------------
-function addTaskBtn(targetProjectName) {
-	// Initial setup reveal "Add Task" btn
-	const addTaskBtn = document.querySelector(".add-task-btn");
+// This is the 'plus' btn that will open up the task modal
+function showAddTaskBtn() {
 	addTaskBtn.classList.remove("hidden");
-
-	// Remove the event listener if it exists to avoid conflict
-	addTaskBtn.removeEventListener("click", addTaskClickHandler);
 	addTaskBtn.addEventListener("click", addTaskClickHandler);
-
-	function addTaskClickHandler() {
-		addTaskBtn.classList.add("hidden");
-		showTaskModal(targetProjectName);
-	}
 }
 
+function removeAddTaskBtn() {
+	addTaskBtn.classList.add("hidden");
+	console.log("wth");
+	addTaskBtn.removeEventListener("click", addTaskClickHandler);
+}
+
+function addTaskClickHandler() {
+	showTaskModal(targetName);
+	removeAddTaskBtn();
+}
+
+// Opens up the main task modal
 function showTaskModal(targetProjectName) {
 	const taskModal = document.querySelector(".task-modal-container");
 	taskModal.classList.remove("hidden");
-	console.log(targetProjectName);
 	handleModalRequest("addTask", targetProjectName);
 }
 
 function closeTaskModal() {
 	const modalTask = document.querySelector(".task-modal-container");
-	const addTaskBtn = document.querySelector(".add-task-btn");
 
+	// Reset inputs
 	document.getElementById("task-name").value = "";
 	document.getElementById("task-description").value = "";
 
 	modalTask.classList.add("hidden");
-	addTaskBtn.classList.remove("hidden");
 }
 
 function createElement(type, className) {
@@ -152,7 +155,7 @@ function createFlagBaseOnPriority(flagImg, priorityInfo) {
 			break;
 		default:
 			removeAllFlagPriority(flagImg);
-         flagImg.src = priorityNeutralFlag;
+			flagImg.src = priorityNeutralFlag;
 			flagImg.classList.add("flag-none");
 	}
 }
@@ -163,4 +166,27 @@ function removeAllFlagPriority(flagImg) {
 	flagImg.classList.remove("flag-low");
 }
 
-export { displayMainInfo, displayTask, closeTaskModal, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority };
+function displayProjectBaseOnChoice(mainTabName) {
+	switch (mainTabName) {
+		case "All":
+			displayAllProject();
+			break;
+		default:
+			break;
+	}
+}
+
+function displayAllProject() {
+	clearTaskList();
+	for (let project = 0; project < projectList.length; project++) {
+		const projectName = projectList[project].title;
+		console.log(projectName);
+		displayTask(projectName);
+	}
+}
+
+function clearTaskList() {
+	taskList.textContent = "";
+}
+
+export { displayMainInfo, displayTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList };
