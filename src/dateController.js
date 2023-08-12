@@ -5,7 +5,7 @@ function formatDate(rawDate) {
    console.log(rawDate);
    // Parse the ISO date string to a Date object [we need this so we can take time zone issues into account]
    const selectedDate = parseISO(rawDate); 
-   const formattedDate = format(selectedDate, "MMMM d, yyyy");
+   const formattedDate = format(selectedDate, "LLL d, yyyy");
    return formattedDate;
 }
 

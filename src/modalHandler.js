@@ -1,5 +1,6 @@
 import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
-import { getProjectTask, closeTaskModal, showAddTaskBtn, createFlagBaseOnPriority, priorityNeutralFlag, removeAllFlagPriority, clearTaskList} from "./mainPageController.js";
+import { getProjectTask, closeTaskModal, showAddTaskBtn, clearTaskList} from "./mainPageController.js";
+import {createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag} from "./taskCreator.js"
 import {formatDate} from "./dateController.js";
 
 const modalProject = document.querySelector(".project-modal-background");
