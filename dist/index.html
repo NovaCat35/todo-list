@@ -55,9 +55,9 @@
 				<!-- TASK MODAL -->
 				<div class="task-modal-container hidden">
 					<form action="">
-						<input type="text" id="task-name" placeholder="Task name" autocomplete="off" required />
+						<input type="text" id="task-name" placeholder="Task name" autocomplete="off" maxlength="20" required />
 						<span id="errorText" class="error-message">Please fill out this field.</span>
-						<input type="text" id="task-description" placeholder="Description" maxlength="40" />
+						<input type="text" id="task-description" placeholder="Description" autocomplete="off" maxlength="40" />
 						<div class="bottom-tabs">
 							<div class="option-container">
 								<div class="due-date-container">
@@ -108,7 +108,7 @@
 				</header>
 				<form id="modal-form" action="">
 					<label for="project-name">Name:</label>
-					<input type="text" name="projectName" id="project-name" required />
+					<input type="text" name="projectName" id="project-name" autocomplete="off" required />
 					<div class="modal-btn-container">
 						<button type="submit" class="modal-project-btn">Add|Edit</button>
 						<button type="button" class="modal-cancel-btn">Cancel</button>

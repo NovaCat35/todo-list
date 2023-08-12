@@ -1,8 +1,7 @@
 import { formatDate } from "./dateController.js";
-import {taskList} from "./mainPageController.js";
+import { taskList } from "./mainPageController.js";
 import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
-
 
 // This will take the individual task from @param and create a list base on its info
 function displayTask(task) {
@@ -11,6 +10,10 @@ function displayTask(task) {
 	const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
 	const taskInnerRightContainer = createElement("div", "task-inner-right-container");
 	const taskDescrContainer = createElement("div", "task-descr-container");
+
+	// Create round checkbox
+	const roundCheckbox = createRoundCheckbox();
+   taskInnerLeftContainer.appendChild(roundCheckbox)
 
 	// TITLE
 	const taskTitle = createElement("p", "task-title");
@@ -76,11 +79,33 @@ function removeAllFlagPriority(flagImg) {
 	flagImg.classList.remove("flag-low");
 }
 
+function createRoundCheckbox() {
+	const round = createElement("div", "roundCheckBtn");
+	const checkbox = createInputById("input", "checkbox");
+	const checkboxLabel = createElementLabel("label", "checkbox");
+
+	round.appendChild(checkbox);
+	round.appendChild(checkboxLabel);
+	return round;
+}
+
 function createElement(type, className) {
 	const element = document.createElement(type);
 	element.classList.add(className);
 	return element;
 }
 
+function createInputById(type, idName) {
+	const input = document.createElement(type);
+	input.setAttribute("id", idName);
+   input.setAttribute("type", idName);
+	return input;
+}
 
-export {displayTask, createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag}
+function createElementLabel(type, forInput) {
+	const element = document.createElement(type);
+	element.setAttribute("for", forInput);
+	return element;
+}
+
+export { displayTask, createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag };

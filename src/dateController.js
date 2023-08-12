@@ -1,6 +1,6 @@
 import { format, parseISO } from "date-fns";
 
-// Format the default raw string value "yyyy-MM-dd" to --> MMMM d, yyyy
+// Format the default raw string value "yyyy-MM-dd" to --> LLL d, yyyy (shorthand for month)
 function formatDate(rawDate) {
    console.log(rawDate);
    // Parse the ISO date string to a Date object [we need this so we can take time zone issues into account]

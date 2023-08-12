@@ -1,3 +1,6 @@
+:root {
+	--roundCheckboxColor: #57c2ef;
+}
 /** OVERALL TASK LIST **/
 .task-list {
 	margin-top: 10px;
@@ -26,12 +29,18 @@
 	font-size: 1.2rem;
 }
 .task-info-container .task-description {
-	color:rgb(83, 83, 83);
+	color: rgb(83, 83, 83);
 }
 .task-top-container {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.task-inner-left-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
 }
 .task-inner-right-container {
 	display: flex;
@@ -39,11 +48,11 @@
 	align-items: center;
 }
 
-
 /* priority flags in tasks */
 img.priority-flag {
 	width: 30px;
 }
+
 /* Fills in flag in modal and tasks */
 img.flag-high {
 	filter: var(--priority-high-color);
@@ -55,7 +64,6 @@ img.flag-low {
 	filter: var(--priority-low-color);
 }
 
-
 /** "Add Task" button **/
 .add-task-btn {
 	cursor: pointer;
@@ -66,3 +74,42 @@ img.flag-low {
 .add-task-btn img {
 	width: 30px;
 }
+
+/** Round checkbox btn **/
+.roundCheckBtn {
+	position: relative;
+ }
+ .roundCheckBtn label {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	cursor: pointer;
+	height: 25px;
+	width: 25px;
+	display: flex;
+ }
+ /* This is the check icon that appears when checkbox is active */
+ .roundCheckBtn label:after {
+	content: "";
+	border: 2px solid #fff;
+	border-top: none;
+	border-right: none;
+	height: 5px;
+	width: 11px;
+	left: 6px;
+	top: 7px;
+	opacity: 0;
+	position: absolute;
+	transform: rotate(-45deg);
+ }
+ .roundCheckBtn input[type="checkbox"] {
+	visibility: hidden;
+	position: absolute;
+ }
+ .roundCheckBtn input[type="checkbox"]:checked + label {
+	background-color: var(--roundCheckboxColor);
+	border-color: var(--roundCheckboxColor);
+ }
+ .roundCheckBtn input[type="checkbox"]:checked + label:after {
+	opacity: 1;
+ }
