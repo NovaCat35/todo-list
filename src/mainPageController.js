@@ -1,7 +1,7 @@
 import handleModalRequest from "./modalHandler.js";
 import { projectList } from "./projectController.js";
 import { getTodaysDate } from "./dateController.js";
-import {displayTask, clearTaskList} from  "./taskCreator.js";
+import { displayTask, clearTaskList } from "./taskCreator.js";
 
 const taskList = document.querySelector(".task-list");
 const addTaskBtn = document.querySelector(".add-task-btn");
@@ -102,7 +102,10 @@ function displayProjectBaseOnChoice(mainTabName) {
 			displayTodayTasks();
 			break;
 		case "Upcoming":
-			displayUpcomingTasks()
+			displayUpcomingTasks();
+			break;
+		case "Completed":
+			displayCompletedTasks();
 			break;
 		default:
 			break;
@@ -117,7 +120,6 @@ function displayAllProject() {
 	}
 }
 
-
 function displayTodayTasks() {
 	const today = getTodaysDate();
 	let todayTaskList = [];
@@ -131,7 +133,7 @@ function displayTodayTasks() {
 
 	// Filter for task that match today's date
 	for (let i = 0; i < projectList.length; i++) {
-		const filteredTasksList = filterTaskByToday(today, projectList[i])
+		const filteredTasksList = filterTaskByToday(today, projectList[i]);
 		todayTaskList = todayTaskList.concat(filteredTasksList);
 	}
 
@@ -146,7 +148,7 @@ function displayUpcomingTasks() {
 	clearTaskList();
 
 	function filterTaskByUpcoming(todayDate, project) {
-		const projectTasks = project.getTasks()
+		const projectTasks = project.getTasks();
 		const upcomingTasks = projectTasks.filter((task) => {
 			if (task.date) {
 				const taskDate = new Date(task.date); // Convert task date to Date object
@@ -160,7 +162,7 @@ function displayUpcomingTasks() {
 
 	// Filter for tasks that have due dates greater than or equal to today
 	for (let i = 0; i < projectList.length; i++) {
-		const filteredTasksList = filterTaskByUpcoming(today, projectList[i])
+		const filteredTasksList = filterTaskByUpcoming(today, projectList[i]);
 		upcomingTaskList = upcomingTaskList.concat(filteredTasksList);
 	}
 
@@ -169,6 +171,15 @@ function displayUpcomingTasks() {
 	}
 }
 
-
+function displayCompletedTasks() {
+	clearTaskList();
+	projectList.forEach((project) => {
+		project.getTasks().forEach((task) => {
+			if (task.getStatus()) {
+				displayTask(task);
+			}
+		});
+	});
+}
 
 export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, taskList };
