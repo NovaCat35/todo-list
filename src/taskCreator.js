@@ -13,7 +13,7 @@ function displayTask(task) {
 
 	// Create round checkbox
 	const roundCheckbox = createRoundCheckbox();
-   taskInnerLeftContainer.appendChild(roundCheckbox)
+	taskInnerLeftContainer.appendChild(roundCheckbox);
 
 	// TITLE
 	const taskTitle = createElement("p", "task-title");
@@ -47,6 +47,9 @@ function displayTask(task) {
 	taskInfoContainer.appendChild(taskInnerTopContainer);
 	taskInfoContainer.appendChild(taskDescrContainer);
 	taskList.appendChild(taskInfoContainer);
+
+	// Attach listener to checkbox to have strikethrough on title and descr when active
+	addCheckboxListener(roundCheckbox, taskInfoContainer);
 }
 
 function createFlagBaseOnPriority(flagImg, priorityInfo) {
@@ -79,14 +82,30 @@ function removeAllFlagPriority(flagImg) {
 	flagImg.classList.remove("flag-low");
 }
 
+let checkboxCounter = 0; // Initialize a counter for generating unique IDs
 function createRoundCheckbox() {
+	const uniqueId = `checkbox-${checkboxCounter++}`;
 	const round = createElement("div", "roundCheckBtn");
-	const checkbox = createInputById("input", "checkbox");
-	const checkboxLabel = createElementLabel("label", "checkbox");
+	const checkbox = createInputById("input", "checkbox", uniqueId);
+	const checkboxLabel = createElementLabel("label", uniqueId);
 
 	round.appendChild(checkbox);
 	round.appendChild(checkboxLabel);
 	return round;
+}
+function addCheckboxListener(roundCheckboxContainer, taskContainer) {
+   const checkboxInput = roundCheckboxContainer.querySelector('input');
+	checkboxInput.addEventListener("change", function () {
+		console.log("Checkbox state changed");
+
+		if (this.checked) {
+			console.log("Checkbox is checked");
+			taskContainer.classList.add("taskComplete");
+		} else {
+			console.log("Checkbox is unchecked");
+			taskContainer.classList.remove("taskComplete");
+		}
+	});
 }
 
 function createElement(type, className) {
@@ -95,10 +114,10 @@ function createElement(type, className) {
 	return element;
 }
 
-function createInputById(type, idName) {
+function createInputById(type, inputType, idName) {
 	const input = document.createElement(type);
+	input.setAttribute("type", inputType);
 	input.setAttribute("id", idName);
-   input.setAttribute("type", idName);
 	return input;
 }
 
