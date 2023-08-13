@@ -2,6 +2,8 @@ import { formatDate } from "./dateController.js";
 import { taskList } from "./mainPageController.js";
 import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
+import trashIcon from "./assets/delete-icon.svg";
+import { projectList } from "./projectController.js";
 
 // This will take the individual task from @param and create a list base on its info
 function displayTask(task) {
@@ -41,6 +43,10 @@ function displayTask(task) {
 		taskInnerRightContainer.appendChild(taskDate);
 	}
 
+	// Create a trash button
+	const trashBtn = createTrashBtn(task);
+	taskInnerRightContainer.appendChild(trashBtn);
+
 	// Adding final compiled task to taskList!
 	taskInnerTopContainer.appendChild(taskInnerLeftContainer);
 	taskInnerTopContainer.appendChild(taskInnerRightContainer);
@@ -48,9 +54,40 @@ function displayTask(task) {
 	taskInfoContainer.appendChild(taskDescrContainer);
 	taskList.appendChild(taskInfoContainer);
 
-   // Attach listener to checkbox to have strikethrough on title and descr when active
-   updateCheckboxStatus(roundCheckbox, taskInfoContainer, task);
-   addCheckboxListener(roundCheckbox, taskInfoContainer, task);
+	// Attach listener to checkbox to have strikethrough on title and descr when active
+	updateCheckboxStatus(roundCheckbox, taskInfoContainer, task);
+	addCheckboxListener(roundCheckbox, taskInfoContainer, task);
+}
+
+function removeTaskFromProject(task) {
+	const projectWithTask = projectList.find((project) => project.getTasks().includes(task));
+	// Remove the task from the project's task list
+	if (projectWithTask) {
+		const taskIndex = projectWithTask.getTasks().indexOf(task);
+		if (taskIndex !== -1) {
+			projectWithTask.getTasks().splice(taskIndex, 1);
+
+			// Find the task element with the specified title and remove it from the current task list
+			const taskElements = document.querySelectorAll(".task-info-container");
+			taskElements.forEach((taskElement) => {
+				const titleElement = taskElement.querySelector(".task-title");
+				if (titleElement.textContent === task.title) {
+					taskElement.remove();
+				}
+			});
+		}
+	}
+}
+
+function createTrashBtn(task) {
+	// Create a trash button
+	const trashButton = document.createElement("img");
+	trashButton.src = trashIcon;
+	trashButton.classList.add("trash-button");
+
+	// Attach event listener to the trash button
+	trashButton.addEventListener("click", () => removeTaskFromProject(task));
+	return trashButton;
 }
 
 function createFlagBaseOnPriority(flagImg, priorityInfo) {
@@ -95,55 +132,53 @@ function createRoundCheckbox() {
 	return round;
 }
 
+const checkboxListener = function (checkboxInput, taskContainer, task) {
+	console.log("Checkbox state changed");
 
-const checkboxListener = function(checkboxInput,taskContainer,task) {
-   console.log("Checkbox state changed");
-
-   if (checkboxInput.checked) {
-      console.log("Checkbox is checked");
-      task.setStatus(true);
-      taskContainer.classList.add("taskComplete");
-   } else {
-      console.log("Checkbox is unchecked");
-      task.setStatus(false);
-      taskContainer.classList.remove("taskComplete");
-   }
-}
+	if (checkboxInput.checked) {
+		console.log("Checkbox is checked");
+		task.setStatus(true);
+		taskContainer.classList.add("taskComplete");
+	} else {
+		console.log("Checkbox is unchecked");
+		task.setStatus(false);
+		taskContainer.classList.remove("taskComplete");
+	}
+};
 
 const checkboxEventListeners = []; // Create a list of listeners so we can remove them when we recreate the taskList
 function addCheckboxListener(roundCheckboxContainer, taskContainer, task) {
-   const checkboxInput = roundCheckboxContainer.querySelector('input');
+	const checkboxInput = roundCheckboxContainer.querySelector("input");
 
-   checkboxInput.addEventListener("change", checkboxListener.bind(null, checkboxInput,taskContainer, task));
-   checkboxEventListeners.push({ checkboxInput, checkboxListener });
+	checkboxInput.addEventListener("change", checkboxListener.bind(null, checkboxInput, taskContainer, task));
+	checkboxEventListeners.push({ checkboxInput, checkboxListener });
 }
 
 function clearTaskList() {
-   // Remove event listeners before clearing the content
-   checkboxEventListeners.forEach(entry => {
-      console.log(`entry: ${entry}`)
-      const { checkboxInput, checkboxListener } = entry; // Destructure the stored object
-      checkboxInput.removeEventListener("change", checkboxListener);
-   });
+	// Remove event listeners before clearing the content
+	checkboxEventListeners.forEach((entry) => {
+		console.log(`entry: ${entry}`);
+		const { checkboxInput, checkboxListener } = entry; // Destructure the stored object
+		checkboxInput.removeEventListener("change", checkboxListener);
+	});
 
-   // Clear the content
-   taskList.textContent = "";
+	// Clear the content
+	taskList.textContent = "";
 }
 
-
 function updateCheckboxStatus(roundCheckboxContainer, taskContainer, task) {
-   const status = task.getStatus();
-   const checkboxInput = roundCheckboxContainer.querySelector('input');
+	const status = task.getStatus();
+	const checkboxInput = roundCheckboxContainer.querySelector("input");
 
-   console.log(`updating: ${status}`)
+	console.log(`updating: ${status}`);
 
-   if (status) {
-      checkboxInput.checked = true;
-      taskContainer.classList.add("taskComplete");
-   } else {
-      checkboxInput.checked = false;
-      taskContainer.classList.remove("taskComplete");
-   }
+	if (status) {
+		checkboxInput.checked = true;
+		taskContainer.classList.add("taskComplete");
+	} else {
+		checkboxInput.checked = false;
+		taskContainer.classList.remove("taskComplete");
+	}
 }
 
 function createElement(type, className) {

@@ -50,8 +50,8 @@
 	align-items: center;
 }
 
-/* priority flags in tasks */
-img.priority-flag {
+/* priority flags & delete icon in tasks */
+img.priority-flag, img.trash-button{
 	width: 30px;
 }
 
