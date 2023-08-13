@@ -1,7 +1,7 @@
 import handleModalRequest from "./modalHandler.js";
 import { projectList } from "./projectController.js";
 import { getTodaysDate } from "./dateController.js";
-import {displayTask} from  "./taskCreator.js";
+import {displayTask, clearTaskList} from  "./taskCreator.js";
 
 const taskList = document.querySelector(".task-list");
 const addTaskBtn = document.querySelector(".add-task-btn");
@@ -89,12 +89,6 @@ function closeTaskModal() {
 	modalTask.classList.add("hidden");
 }
 
-
-
-function clearTaskList() {
-	taskList.textContent = "";
-}
-
 /**
  *	@param {main tab's specific name} mainTabName
  *	We assign specific roles here base on the tab's name
@@ -141,8 +135,6 @@ function displayTodayTasks() {
 		todayTaskList = todayTaskList.concat(filteredTasksList);
 	}
 
-	console.log("Filtered Projects:", todayTaskList);
-
 	for (let k = 0; k < todayTaskList.length; k++) {
 		displayTask(todayTaskList[k]);
 	}
@@ -172,8 +164,6 @@ function displayUpcomingTasks() {
 		upcomingTaskList = upcomingTaskList.concat(filteredTasksList);
 	}
 
-	console.log("Upcoming Tasks:", upcomingTaskList);
-
 	for (let k = 0; k < upcomingTaskList.length; k++) {
 		displayTask(upcomingTaskList[k]);
 	}
@@ -181,4 +171,4 @@ function displayUpcomingTasks() {
 
 
 
-export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, clearTaskList, taskList };
+export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, taskList };

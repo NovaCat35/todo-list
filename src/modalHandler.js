@@ -1,6 +1,6 @@
 import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
-import { getProjectTask, closeTaskModal, showAddTaskBtn, clearTaskList} from "./mainPageController.js";
-import {createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag} from "./taskCreator.js"
+import { getProjectTask, closeTaskModal, showAddTaskBtn} from "./mainPageController.js";
+import {createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag, clearTaskList} from "./taskCreator.js"
 import {formatDate} from "./dateController.js";
 
 const modalProject = document.querySelector(".project-modal-background");
@@ -94,18 +94,34 @@ function onProjectClick(event) {
 	}
 }
 
-// ---- PROJECT  ----
+// ***************************
+// ---- CREATE TASK  ----
+// ***************************
+function createTask(title, description = null, priority = null, date = null) {
+	let completeStatus = false;
+	return {
+		title,
+		description,
+		priority,
+		date,
+		getStatus() {
+			return completeStatus;
+		},
+		setStatus(statusUpdate) {
+			completeStatus = statusUpdate;
+		}
+	};
+}
+// ***************************
+// ---- CREATE PROJECT  ----
+// ***************************
 function createProjectList(title) {
 	let tasks = [];
 	return {
 		title,
 		setTask(title, description = null, priority = null, date = null) {
-			tasks.push({
-				title,
-				description,
-				priority,
-				date,
-			});
+			const newTaskInstance = createTask(title, description, priority, date);
+			tasks.push(newTaskInstance);
 		},
 		getTasks() {
 			return tasks;

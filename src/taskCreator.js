@@ -48,8 +48,9 @@ function displayTask(task) {
 	taskInfoContainer.appendChild(taskDescrContainer);
 	taskList.appendChild(taskInfoContainer);
 
-	// Attach listener to checkbox to have strikethrough on title and descr when active
-	addCheckboxListener(roundCheckbox, taskInfoContainer);
+   // Attach listener to checkbox to have strikethrough on title and descr when active
+   updateCheckboxStatus(roundCheckbox, taskInfoContainer, task);
+   addCheckboxListener(roundCheckbox, taskInfoContainer, task);
 }
 
 function createFlagBaseOnPriority(flagImg, priorityInfo) {
@@ -93,19 +94,56 @@ function createRoundCheckbox() {
 	round.appendChild(checkboxLabel);
 	return round;
 }
-function addCheckboxListener(roundCheckboxContainer, taskContainer) {
-   const checkboxInput = roundCheckboxContainer.querySelector('input');
-	checkboxInput.addEventListener("change", function () {
-		console.log("Checkbox state changed");
 
-		if (this.checked) {
-			console.log("Checkbox is checked");
-			taskContainer.classList.add("taskComplete");
-		} else {
-			console.log("Checkbox is unchecked");
-			taskContainer.classList.remove("taskComplete");
-		}
-	});
+
+const checkboxListener = function(checkboxInput,taskContainer,task) {
+   console.log("Checkbox state changed");
+
+   if (checkboxInput.checked) {
+      console.log("Checkbox is checked");
+      task.setStatus(true);
+      taskContainer.classList.add("taskComplete");
+   } else {
+      console.log("Checkbox is unchecked");
+      task.setStatus(false);
+      taskContainer.classList.remove("taskComplete");
+   }
+}
+
+const checkboxEventListeners = []; // Create a list of listeners so we can remove them when we recreate the taskList
+function addCheckboxListener(roundCheckboxContainer, taskContainer, task) {
+   const checkboxInput = roundCheckboxContainer.querySelector('input');
+
+   checkboxInput.addEventListener("change", checkboxListener.bind(null, checkboxInput,taskContainer, task));
+   checkboxEventListeners.push({ checkboxInput, checkboxListener });
+}
+
+function clearTaskList() {
+   // Remove event listeners before clearing the content
+   checkboxEventListeners.forEach(entry => {
+      console.log(`entry: ${entry}`)
+      const { checkboxInput, checkboxListener } = entry; // Destructure the stored object
+      checkboxInput.removeEventListener("change", checkboxListener);
+   });
+
+   // Clear the content
+   taskList.textContent = "";
+}
+
+
+function updateCheckboxStatus(roundCheckboxContainer, taskContainer, task) {
+   const status = task.getStatus();
+   const checkboxInput = roundCheckboxContainer.querySelector('input');
+
+   console.log(`updating: ${status}`)
+
+   if (status) {
+      checkboxInput.checked = true;
+      taskContainer.classList.add("taskComplete");
+   } else {
+      checkboxInput.checked = false;
+      taskContainer.classList.remove("taskComplete");
+   }
 }
 
 function createElement(type, className) {
@@ -127,4 +165,4 @@ function createElementLabel(type, forInput) {
 	return element;
 }
 
-export { displayTask, createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag };
+export { displayTask, clearTaskList, createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag };
