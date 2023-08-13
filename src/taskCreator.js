@@ -1,5 +1,5 @@
 import { formatDate } from "./dateController.js";
-import { taskList } from "./mainPageController.js";
+import { taskList, inMainTab } from "./mainPageController.js";
 import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
 import trashIcon from "./assets/delete-icon.svg";
@@ -59,15 +59,34 @@ function displayTask(task) {
 	addCheckboxListener(roundCheckbox, taskInfoContainer, task);
 }
 
+/**
+ * This checks if the taskList is empty (For main tabs).
+ * If so, we display a friendly "horray!" msg
+ */ 
+function checkTaskListEmpty() {
+   if(inMainTab) {
+      if (!taskList.hasChildNodes()) {
+         const horrayMessage = createElement("p", "horrayMessage");
+         const text1 = document.createTextNode("HORRAY!");
+         const br = document.createElement("br");
+         const text2 = document.createTextNode("NO TASKS TO DO :)");
+         horrayMessage.appendChild(text1);
+         horrayMessage.appendChild(br);
+         horrayMessage.appendChild(text2);
+         taskList.appendChild(horrayMessage);
+      }
+   }
+}
+
 function removeTaskFromProject(task) {
 	const projectWithTask = projectList.find((project) => project.getTasks().includes(task));
-	// Remove the task from the project's task list
-	if (projectWithTask) {
+	// Remove the task from the project's task list (Stored Info)
+
 		const taskIndex = projectWithTask.getTasks().indexOf(task);
 		if (taskIndex !== -1) {
 			projectWithTask.getTasks().splice(taskIndex, 1);
 
-			// Find the task element with the specified title and remove it from the current task list
+			// Find the task element with the specified title and remove it from the current task list (DOM)
 			const taskElements = document.querySelectorAll(".task-info-container");
 			taskElements.forEach((taskElement) => {
 				const titleElement = taskElement.querySelector(".task-title");
@@ -76,7 +95,7 @@ function removeTaskFromProject(task) {
 				}
 			});
 		}
-	}
+      checkTaskListEmpty()
 }
 
 function createTrashBtn(task) {
@@ -200,4 +219,4 @@ function createElementLabel(type, forInput) {
 	return element;
 }
 
-export { displayTask, clearTaskList, createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag };
+export { displayTask, clearTaskList, createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag, checkTaskListEmpty };

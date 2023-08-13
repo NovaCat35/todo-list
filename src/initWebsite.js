@@ -1,3 +1,5 @@
+import { checkTaskListEmpty } from "./taskCreator.js";
+
 export default function initWebsite() {
    const mainTitle = document.querySelector(".main-title");
    const allNavTab = document.getElementById("All");
@@ -7,4 +9,6 @@ export default function initWebsite() {
 
    // Set focus on "All" main tab
    allNavTab.focus()
+
+   checkTaskListEmpty();
 }

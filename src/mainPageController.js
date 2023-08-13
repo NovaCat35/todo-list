@@ -1,11 +1,12 @@
 import handleModalRequest from "./modalHandler.js";
 import { projectList } from "./projectController.js";
 import { getTodaysDate } from "./dateController.js";
-import { displayTask, clearTaskList } from "./taskCreator.js";
+import { displayTask, clearTaskList, checkTaskListEmpty } from "./taskCreator.js";
 
 const taskList = document.querySelector(".task-list");
 const addTaskBtn = document.querySelector(".add-task-btn");
 let targetName = null;
+let inMainTab = true;
 
 /**
  * @param {title of navTab} navTabInfo
@@ -25,12 +26,14 @@ function displayMainInfo(event, navTabInfo) {
 
 	// Checks if displaying the main nav title
 	if (navTabInfo == "mainTabInfo") {
+		inMainTab = true
 		removeAddTaskBtn();
 		targetName = event.target.id;
 		displayProjectBaseOnChoice(targetName);
 	}
 	// Otherwise, we selected project's title
 	else {
+		inMainTab = false
 		const projectElement = event.target.closest("[data-project-id]");
 		if (projectElement) {
 			targetName = projectElement.getAttribute("data-project-id");
@@ -97,15 +100,19 @@ function displayProjectBaseOnChoice(mainTabName) {
 	switch (mainTabName) {
 		case "All":
 			displayAllProject();
+			checkTaskListEmpty();
 			break;
 		case "Today":
 			displayTodayTasks();
+			checkTaskListEmpty();
 			break;
 		case "Upcoming":
 			displayUpcomingTasks();
+			checkTaskListEmpty();
 			break;
 		case "Completed":
 			displayCompletedTasks();
+			checkTaskListEmpty();
 			break;
 		default:
 			break;
@@ -182,4 +189,4 @@ function displayCompletedTasks() {
 	});
 }
 
-export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, taskList };
+export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, taskList, inMainTab };
