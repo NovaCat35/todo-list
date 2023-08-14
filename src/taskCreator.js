@@ -3,6 +3,7 @@ import { taskList, inMainTab } from "./mainPageController.js";
 import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
 import trashIcon from "./assets/delete-icon.svg";
+import mobPyschoImg from "./assets/mob-art-calendar.jpeg";
 import { projectList } from "./projectController.js";
 
 // This will take the individual task from @param and create a list base on its info
@@ -66,13 +67,18 @@ function displayTask(task) {
 function checkTaskListEmpty() {
    if(inMainTab) {
       if (!taskList.hasChildNodes()) {
-         const horrayMessage = createElement("p", "horrayMessage");
-         const text1 = document.createTextNode("HORRAY!");
-         const br = document.createElement("br");
-         const text2 = document.createTextNode("NO TASKS TO DO :)");
+         const horrayMessage = createElement("div", "horrayMessage");
+         const text1 = createElement("p", 'text1');
+         const text2 = createElement("p", 'text2');
+         const img = createElement("img", 'mob-pyscho-calendar');
+
+         text1.textContent = 'HORRAY!'
+         text2.textContent = 'No tasks to do :)'
+         img.src = mobPyschoImg;
+
          horrayMessage.appendChild(text1);
-         horrayMessage.appendChild(br);
          horrayMessage.appendChild(text2);
+         horrayMessage.appendChild(img);
          taskList.appendChild(horrayMessage);
       }
    }

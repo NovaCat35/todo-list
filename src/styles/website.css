@@ -241,6 +241,33 @@ main .main-content {
 	justify-content: flex-start;
 	align-items: center;
 }
+/* HORRAY MESSAGE for empty task list */
+.horrayMessage {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 3px;
+	position: relative;
+	left: 50%;
+	top:50%;
+	transform: translate(-50%, -50%);
+	margin-top: -10px;
+}
+.horrayMessage .text1 {
+	font-size: 2rem;
+	margin: 0;
+}
+.horrayMessage .text2 {
+	font-size: 1rem;
+	margin: 0;
+	margin-bottom: 5px;
+}
+.horrayMessage img {
+	width: 80vw;
+	border-radius: 50%;
+}
+
 
 /* ********************** */
 /*** FOOTER ***/
@@ -289,5 +316,13 @@ footer img:hover {
 	main .side-nav.active {
 		width: 300px;
 		position: static;
+	}
+	.horrayMessage img {
+		width: 80%;
+	}
+}
+@media screen and (min-width: 100px) {
+	.horrayMessage img {
+		width: 300px;
 	}
 }

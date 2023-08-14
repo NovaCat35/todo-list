@@ -11,3 +11,8 @@ Making custom date buttons and priority dropdowns
 Set sidenav to close on project select & have better close transition, Search engine responsive
 
 global variables and event listeners calls cause me a headache, learn to remove and separate call logic and use global variable less if possible
+
+
+
+## Image Source
+mob pyscho: https://twitter.com/helenpeanut/status/1311336009775435777
