@@ -27,8 +27,12 @@ function displayMainInfo(event, navTabInfo) {
 	// Checks if displaying the main nav title
 	if (navTabInfo == "mainTabInfo") {
 		inMainTab = true
-		removeAddTaskBtn();
 		targetName = event.target.id;
+		const navTab = event.target
+
+		removeAddTaskBtn();
+		removeAllTabActive();
+		setTabActive(navTab)
 		displayProjectBaseOnChoice(targetName);
 	}
 	// Otherwise, we selected project's title
@@ -188,5 +192,15 @@ function displayCompletedTasks() {
 		});
 	});
 }
+
+function removeAllTabActive() {
+	const allNavTabs = document.querySelectorAll('.navtab');
+	allNavTabs.forEach(tab => tab.classList.remove('active'))
+}
+
+function setTabActive(navTab) {
+	navTab.classList.add('active')
+}
+
 
 export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, taskList, inMainTab };

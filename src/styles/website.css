@@ -2,7 +2,8 @@
 	--nav-bar-background: rgb(237, 237, 236);
 	--top-nav-background: rgb(226, 106, 82);
 	--footer-background: rgb(219, 219, 219);
-	--nav-tab-focus-color: rgb(238, 156, 54);
+	--nav-tab-active-color: rgb(238, 156, 54);
+	--nav-tab-hover-color: rgb(238, 88, 54);
 }
 * {
 	box-sizing: border-box;
@@ -163,11 +164,12 @@ main .side-nav.active {
 	padding: 10px;
 	width: 80%;
 }
-
 .navtab:focus,
-.navtab:hover {
-	outline: 2px solid var(--nav-tab-focus-color); 
+.navtab:hover,
+.navtab.active {
+	outline: 2px solid var(--nav-tab-active-color); 
 }
+
 /* Project SideNav  */
 .project-header {
 	display: flex;
@@ -240,6 +242,18 @@ main .main-content {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+}
+.taskInfoHeader h2 {
+	position: relative;
+}
+.taskInfoHeader h2::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	background-color: black;
+	top: 30px;
+	height: 2px;
+	width: 100%;
 }
 /* HORRAY MESSAGE for empty task list */
 .horrayMessage {

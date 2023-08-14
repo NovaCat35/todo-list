@@ -8,7 +8,6 @@ export default function initWebsite() {
    mainTitle.textContent = 'All'
 
    // Set focus on "All" main tab
-   allNavTab.focus()
-
+   allNavTab.classList.add('active');
    checkTaskListEmpty();
 }
