@@ -158,14 +158,10 @@ function createRoundCheckbox() {
 }
 
 const checkboxListener = function (checkboxInput, taskContainer, task) {
-	console.log("Checkbox state changed");
-
 	if (checkboxInput.checked) {
-		console.log("Checkbox is checked");
 		task.setStatus(true);
 		taskContainer.classList.add("taskComplete");
 	} else {
-		console.log("Checkbox is unchecked");
 		task.setStatus(false);
 		taskContainer.classList.remove("taskComplete");
 	}
@@ -182,7 +178,6 @@ function addCheckboxListener(roundCheckboxContainer, taskContainer, task) {
 function clearTaskList() {
 	// Remove event listeners before clearing the content
 	checkboxEventListeners.forEach((entry) => {
-		console.log(`entry: ${entry}`);
 		const { checkboxInput, checkboxListener } = entry; // Destructure the stored object
 		checkboxInput.removeEventListener("change", checkboxListener);
 	});
@@ -194,8 +189,6 @@ function clearTaskList() {
 function updateCheckboxStatus(roundCheckboxContainer, taskContainer, task) {
 	const status = task.getStatus();
 	const checkboxInput = roundCheckboxContainer.querySelector("input");
-
-	console.log(`updating: ${status}`);
 
 	if (status) {
 		checkboxInput.checked = true;

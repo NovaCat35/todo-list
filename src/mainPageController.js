@@ -1,4 +1,4 @@
-import handleModalRequest from "./modalHandler.js";
+import {handleModalRequest} from "./modalHandler.js";
 import { projectList } from "./projectController.js";
 import { getTodaysDate } from "./dateController.js";
 import { displayTask, clearTaskList, checkTaskListEmpty } from "./taskCreator.js";
@@ -38,6 +38,8 @@ function displayMainInfo(event, navTabInfo) {
 	// Otherwise, we selected project's title
 	else {
 		inMainTab = false
+		removeAllTabActive()
+
 		const projectElement = event.target.closest("[data-project-id]");
 		if (projectElement) {
 			targetName = projectElement.getAttribute("data-project-id");
@@ -116,7 +118,6 @@ function displayProjectBaseOnChoice(mainTabName) {
 			break;
 		case "Completed":
 			displayCompletedTasks();
-			checkTaskListEmpty();
 			break;
 		default:
 			break;

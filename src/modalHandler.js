@@ -1,7 +1,8 @@
-import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
-import { getProjectTask, closeTaskModal, showAddTaskBtn} from "./mainPageController.js";
-import {createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag, clearTaskList} from "./taskCreator.js"
-import {formatDate} from "./dateController.js";
+import { projectList, createProjectElement, replaceProjectElement, addNewProject } from "./projectController.js";
+import { getProjectTask, closeTaskModal, showAddTaskBtn } from "./mainPageController.js";
+import { createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag, clearTaskList } from "./taskCreator.js";
+import { formatDate } from "./dateController.js";
+import { updateProjectToStorage } from "./localStorage.js";
 
 const modalProject = document.querySelector(".project-modal-background");
 const projectForm = document.querySelector(".project-modal-container form");
@@ -25,7 +26,7 @@ let editMode = false;
 
 // ************** PROJECT MODAL **************
 // modalElement being the modalProjectContainer or the modalTaskContain
-export default function handleModalRequest(modalType, projectId = null) {
+function handleModalRequest(modalType, projectId = null) {
 	// Setup initial values
 	resetModal(projectId);
 
@@ -78,19 +79,30 @@ function onProjectClick(event) {
 	if (projectForm.checkValidity()) {
 		event.preventDefault();
 		const title = document.getElementById("project-name").value;
+		// If in edit mode, update the existing project
 		if (editMode) {
-			// If in edit mode, update the existing project
-			const index = projectList.findIndex((project) => project.title === targetProjectName);
-			if (index !== -1) {
-				projectList[index].title = title;
-				replaceProjectElement(targetProjectName, title);
-			}
-		} else {
-			// If in add mode, create a new project
-			projectList.push(createProjectList(title));
-			createProjectElement(title);
+			editOldProject(title)
 		}
+		// If in add mode, create a new project
+		else {
+			createNewProject(title);
+		}
+
 		clearProjectModal();
+		updateProjectToStorage(); //localSave update!!
+	}
+}
+
+function createNewProject(projectTitle) {
+	projectList.push(createProjectList(projectTitle));
+	createProjectElement(projectTitle);
+}
+
+function editOldProject(projectTitle) {
+	const index = projectList.findIndex((project) => project.title === targetProjectName);
+	if (index !== -1) {
+		projectList[index].title = projectTitle; // update the projectList
+		replaceProjectElement(targetProjectName, projectTitle); // update DOM
 	}
 }
 
@@ -109,7 +121,7 @@ function createTask(title, description = null, priority = null, date = null) {
 		},
 		setStatus(statusUpdate) {
 			completeStatus = statusUpdate;
-		}
+		},
 	};
 }
 // ***************************
@@ -225,7 +237,7 @@ function updateTaskToProject() {
 	targetProjectInfo.setTask(taskTitle, taskDescription, taskPriority, taskDueDate);
 
 	// Update the task that shows up in main page
-	clearTaskList()
+	clearTaskList();
 	getProjectTask(targetProjectName);
 	closeTaskModal();
 	showAddTaskBtn();
@@ -253,13 +265,15 @@ function resetModal(projectId) {
 }
 
 function priorityType(selectedPriority) {
-	if (selectedPriority == 'high-priority') {
-		return 'High';
-	} 
-	if (selectedPriority == 'medium-priority') {
-		return 'Medium';
-	} 
-	if (selectedPriority == 'low-priority') {
-		return 'Low';
-	} 
+	if (selectedPriority == "high-priority") {
+		return "High";
+	}
+	if (selectedPriority == "medium-priority") {
+		return "Medium";
+	}
+	if (selectedPriority == "low-priority") {
+		return "Low";
+	}
 }
+
+export { handleModalRequest, createNewProject };

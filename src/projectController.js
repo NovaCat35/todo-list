@@ -1,7 +1,8 @@
 import deleteSvg from "./assets/delete-icon.svg";
 import editSvg from "./assets/edit-icon.svg";
-import handleModalRequest from "./modalHandler.js";
-import {displayMainInfo} from "./mainPageController.js"
+import { handleModalRequest } from "./modalHandler.js";
+import { displayMainInfo } from "./mainPageController.js";
+import { updateProjectToStorage } from "./localStorage.js";
 
 let projectList = [];
 const projectContainer = document.querySelector(".project-container");
@@ -44,15 +45,16 @@ function createProjectElement(title) {
 	projectNavLink.appendChild(iconDivider);
 	projectContainer.appendChild(projectNavLink);
 
-	// Add eventListener to display Project's title and other info within main container 
-	projectNavLink.addEventListener('click', (event) => displayMainInfo(event, 'projectTabInfo'))
+	// Add eventListener to display Project's title and other info within main container
+	projectNavLink.addEventListener("click", (event) => displayMainInfo(event, "projectTabInfo"));
 }
 
 // Function to remove the project element from the DOM and list
 function removeProjectElement(projectId) {
 	const projectElement = document.querySelector(`[data-project-id="${projectId}"]`);
 	if (projectElement) {
-		projectList = projectList.filter(project => project.title != projectId)
+		projectList = projectList.filter((project) => project.title != projectId);
+		updateProjectToStorage();
 		projectElement.remove();
 	}
 }
@@ -75,20 +77,20 @@ function createDeleteIcon(iconDivider) {
 	const deleteIcon = createElement("img", "deleteIcon");
 	deleteIcon.src = deleteSvg;
 
-	deleteIcon.addEventListener('click', (event) => {
+	deleteIcon.addEventListener("click", (event) => {
 		const selectedProjectListID = event.target.parentNode.parentNode.getAttribute("data-project-id"); //this is the data attribute ID of the selected projectList
-		removeProjectElement(selectedProjectListID)
-	})
+		removeProjectElement(selectedProjectListID);
+	});
 
 	iconDivider.appendChild(deleteIcon);
 }
 
 // Function to replace the original project link with the new edit title & the data attribute ID too
 function replaceProjectElement(oldProjectLinkId, newTitle) {
-	const projectLink = document.querySelector(`[data-project-id="${oldProjectLinkId}"]`); 
-	const projectTitle =  projectLink.querySelector('.project-title')
+	const projectLink = document.querySelector(`[data-project-id="${oldProjectLinkId}"]`);
+	const projectTitle = projectLink.querySelector(".project-title");
 	projectTitle.textContent = newTitle;
-	projectLink.setAttribute('data-project-id', newTitle);
+	projectLink.setAttribute("data-project-id", newTitle);
 }
 
 function createElement(type, className) {
