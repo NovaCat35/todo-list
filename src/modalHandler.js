@@ -1,6 +1,6 @@
-import { projectList, createProjectElement, replaceProjectElement, addNewProject } from "./projectController.js";
+import { projectList, createProjectElement, replaceProjectElement } from "./projectController.js";
 import { getProjectTask, closeTaskModal, showAddTaskBtn } from "./mainPageController.js";
-import { createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag, clearTaskList } from "./taskCreator.js";
+import { createFlagBaseOnPriority, removeAllFlagPriority, priorityNeutralFlag, clearTaskList } from "./taskController.js";
 import { formatDate } from "./dateController.js";
 import { updateProjectToStorage } from "./localStorage.js";
 
@@ -81,7 +81,7 @@ function onProjectClick(event) {
 		const title = document.getElementById("project-name").value;
 		// If in edit mode, update the existing project
 		if (editMode) {
-			editOldProject(title)
+			editOldProject(title);
 		}
 		// If in add mode, create a new project
 		else {
@@ -94,8 +94,11 @@ function onProjectClick(event) {
 }
 
 function createNewProject(projectTitle) {
-	projectList.push(createProjectList(projectTitle));
+	const project = createProjectList(projectTitle);
+	projectList.push(project);
 	createProjectElement(projectTitle);
+
+	return project; // We will need this for the localStorage to repopulate the tasks
 }
 
 function editOldProject(projectTitle) {
@@ -109,19 +112,13 @@ function editOldProject(projectTitle) {
 // ***************************
 // ---- CREATE TASK  ----
 // ***************************
-function createTask(title, description = null, priority = null, date = null) {
-	let completeStatus = false;
+function createTask(title, description = null, priority = null, date = null, status) {
 	return {
 		title,
 		description,
 		priority,
 		date,
-		getStatus() {
-			return completeStatus;
-		},
-		setStatus(statusUpdate) {
-			completeStatus = statusUpdate;
-		},
+		status,
 	};
 }
 // ***************************
@@ -131,8 +128,8 @@ function createProjectList(title) {
 	let tasks = [];
 	return {
 		title,
-		setTask(title, description = null, priority = null, date = null) {
-			const newTaskInstance = createTask(title, description, priority, date);
+		setTask(title, description = null, priority = null, date = null, status = false) {
+			const newTaskInstance = createTask(title, description, priority, date, status);
 			tasks.push(newTaskInstance);
 		},
 		getTasks() {
@@ -159,14 +156,14 @@ function addTaskModalHandler() {
 		function submitHandler(event) {
 			event.preventDefault();
 			if (taskForm.checkValidity()) {
-				updateTaskToProject();
+				createTaskToProject();
 			}
 		}
 
 		function submitMobileHandler() {
 			if (taskForm.checkValidity()) {
 				errorText.style.display = "none"; // Hide error message
-				updateTaskToProject();
+				createTaskToProject();
 			} else {
 				errorText.style.display = "block"; // Show error message
 			}
@@ -228,7 +225,7 @@ function addTaskModalHandler() {
 	dueDateBtn.addEventListener("click", newEventListeners.dateHandler);
 }
 
-function updateTaskToProject() {
+function createTaskToProject() {
 	const targetProjectInfo = projectList.find((project) => project.title == targetProjectName);
 	const taskTitle = document.getElementById("task-name").value;
 	const taskDescription = document.getElementById("task-description").value;
@@ -237,10 +234,12 @@ function updateTaskToProject() {
 	targetProjectInfo.setTask(taskTitle, taskDescription, taskPriority, taskDueDate);
 
 	// Update the task that shows up in main page
+	updateProjectToStorage();
 	clearTaskList();
 	getProjectTask(targetProjectName);
 	closeTaskModal();
 	showAddTaskBtn();
+	console.log(projectList[0].getTasks());
 }
 
 let priorityListenerAdded = false;

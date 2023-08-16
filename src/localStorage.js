@@ -30,8 +30,7 @@ function getProjectFromStorage() {
 			const project = createNewProject(projectData.title);
 
 			// Here, we manually assign back the tasklist to each project object
-			tasksList.forEach((task) => project.setTask(task.title, task.description, task.priority, task.date));
-
+			tasksList.forEach((task) => project.setTask(task.title, task.description, task.priority, task.date, task.status));
 			return project;
 		});
 
@@ -42,7 +41,8 @@ function getProjectFromStorage() {
 		console.log(firstProject);
 
 		// Call a method from the project object
-		// const tasks = firstProject.getTasks();
+		const tassks = firstProject.getTasks();
+      console.log(`tasks! ${tassks[0]}`)
 	} else {
 		console.log("No serialized object found in local storage.");
 	}

@@ -5,8 +5,9 @@ import priorityNeutralFlag from "./assets/flag.svg";
 import trashIcon from "./assets/delete-icon.svg";
 import mobPyschoImg from "./assets/mob-art-calendar.jpeg";
 import { projectList } from "./projectController.js";
+import { updateProjectToStorage } from "./localStorage.js";
 
-// This will take the individual task from @param and create a list base on its info
+// This will take the individual task from @param and create a list (DOM element) base on its info
 function displayTask(task) {
 	const taskInfoContainer = createElement("div", "task-info-container");
 	const taskInnerTopContainer = createElement("div", "task-top-container");
@@ -101,6 +102,7 @@ function removeTaskFromProject(task) {
 				}
 			});
 		}
+		updateProjectToStorage();
       checkTaskListEmpty()
 }
 
@@ -159,12 +161,13 @@ function createRoundCheckbox() {
 
 const checkboxListener = function (checkboxInput, taskContainer, task) {
 	if (checkboxInput.checked) {
-		task.setStatus(true);
+		task.status = true;
 		taskContainer.classList.add("taskComplete");
 	} else {
-		task.setStatus(false);
+		task.status =false;
 		taskContainer.classList.remove("taskComplete");
 	}
+	updateProjectToStorage();
 };
 
 const checkboxEventListeners = []; // Create a list of listeners so we can remove them when we recreate the taskList
@@ -187,9 +190,10 @@ function clearTaskList() {
 }
 
 function updateCheckboxStatus(roundCheckboxContainer, taskContainer, task) {
-	const status = task.getStatus();
+	const status = task.status;
 	const checkboxInput = roundCheckboxContainer.querySelector("input");
 
+	console.log(status)
 	if (status) {
 		checkboxInput.checked = true;
 		taskContainer.classList.add("taskComplete");

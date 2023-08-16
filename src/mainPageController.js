@@ -1,7 +1,7 @@
-import {handleModalRequest} from "./modalHandler.js";
+import { handleModalRequest } from "./modalHandler.js";
 import { projectList } from "./projectController.js";
 import { getTodaysDate } from "./dateController.js";
-import { displayTask, clearTaskList, checkTaskListEmpty } from "./taskCreator.js";
+import { displayTask, clearTaskList, checkTaskListEmpty } from "./taskController.js";
 
 const taskList = document.querySelector(".task-list");
 const addTaskBtn = document.querySelector(".add-task-btn");
@@ -26,19 +26,19 @@ function displayMainInfo(event, navTabInfo) {
 
 	// Checks if displaying the main nav title
 	if (navTabInfo == "mainTabInfo") {
-		inMainTab = true
+		inMainTab = true;
 		targetName = event.target.id;
-		const navTab = event.target
+		const navTab = event.target;
 
 		removeAddTaskBtn();
 		removeAllTabActive();
-		setTabActive(navTab)
+		setTabActive(navTab);
 		displayProjectBaseOnChoice(targetName);
 	}
 	// Otherwise, we selected project's title
 	else {
-		inMainTab = false
-		removeAllTabActive()
+		inMainTab = false;
+		removeAllTabActive();
 
 		const projectElement = event.target.closest("[data-project-id]");
 		if (projectElement) {
@@ -54,7 +54,8 @@ function displayMainInfo(event, navTabInfo) {
 	closeTaskModal();
 }
 
-// This doesn't display the individual task, rather find the target project and get the task to be displayed
+// This doesn't display the individual task, rather find the target project.
+// Then it calls for other functions update projectList & display task on DOM
 function getProjectTask(projectName) {
 	const targetProjectInfo = projectList.find((project) => project.title == projectName);
 
@@ -187,7 +188,7 @@ function displayCompletedTasks() {
 	clearTaskList();
 	projectList.forEach((project) => {
 		project.getTasks().forEach((task) => {
-			if (task.getStatus()) {
+			if (task.status) {
 				displayTask(task);
 			}
 		});
@@ -195,13 +196,12 @@ function displayCompletedTasks() {
 }
 
 function removeAllTabActive() {
-	const allNavTabs = document.querySelectorAll('.navtab');
-	allNavTabs.forEach(tab => tab.classList.remove('active'))
+	const allNavTabs = document.querySelectorAll(".navtab");
+	allNavTabs.forEach((tab) => tab.classList.remove("active"));
 }
 
 function setTabActive(navTab) {
-	navTab.classList.add('active')
+	navTab.classList.add("active");
 }
 
-
-export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, taskList, inMainTab };
+export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, displayProjectBaseOnChoice, taskList, inMainTab };
