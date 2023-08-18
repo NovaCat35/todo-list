@@ -26,7 +26,7 @@ let editMode = false;
 
 // ************** PROJECT MODAL **************
 // modalElement being the modalProjectContainer or the modalTaskContain
-function handleModalRequest(modalType, projectId = null) {
+function handleModalRequest(modalType, projectId = null, taskInfo = null) {
 	// Setup initial values
 	resetModal(projectId);
 
@@ -40,7 +40,10 @@ function handleModalRequest(modalType, projectId = null) {
 			editProject(projectId);
 			break;
 		case "addTask":
-			addTaskModalHandler(projectId);
+			addTaskModalHandler();
+			break;
+		case "editTask":
+			editTaskModalHandler(taskInfo);
 		default:
 			break;
 	}
@@ -225,6 +228,23 @@ function addTaskModalHandler() {
 	dueDateBtn.addEventListener("click", newEventListeners.dateHandler);
 }
 
+// ********** EDIT TASK ************
+function editTaskModalHandler(taskInfo) {
+	populateOriginalModal(taskInfo);
+}
+
+// This repopulates the modal DOM with the already created task info
+function populateOriginalModal(taskInfo) {
+	document.getElementById("task-name").value = taskInfo.title;
+	document.getElementById("task-description").value = taskInfo.description;
+	const formattedDate = formatDate(taskInfo.date);
+	dueDateTag.textContent = formattedDate;
+	const savedPriority = taskInfo.priority;
+	createFlagBaseOnPriority(flagSrc, savedPriority);
+	priorityBtnTag.textContent = priorityType(savedPriority);
+}
+
+// Execution of modalHandler's request to add the filled out information here
 function createTaskToProject() {
 	const targetProjectInfo = projectList.find((project) => project.title == targetProjectName);
 	const taskTitle = document.getElementById("task-name").value;

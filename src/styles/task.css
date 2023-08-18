@@ -2,6 +2,7 @@
 	--roundCheckboxColor: #57c2ef;
 	--faded-color: rgb(155, 155, 155);
 	--completed-background: rgb(240, 245, 248);
+	--date-font: 'Crimson Text', serif;
 }
 /** OVERALL TASK LIST **/
 .task-list {
@@ -49,10 +50,19 @@
 	gap: 10px;
 	align-items: center;
 }
+.task-bottom-container .task-date{
+	color: rgb(136, 48, 195);
+	font-weight:600;
+	font-family: var(--date-font);
+}
 
-/* priority flags & delete icon in tasks */
+/* icons in tasks */
 img.priority-flag, img.trash-button{
 	width: 30px;
+}
+img.edit-button {
+	width: 26px;
+	margin-top: -4px;
 }
 
 /* Fills in flag in modal and tasks */

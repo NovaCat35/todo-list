@@ -3,9 +3,11 @@ import { taskList, inMainTab } from "./mainPageController.js";
 import priorityFilledFlag from "./assets/flag-fill.svg";
 import priorityNeutralFlag from "./assets/flag.svg";
 import trashIcon from "./assets/delete-icon.svg";
+import editIcon from "./assets/edit-icon.svg";
 import mobPyschoImg from "./assets/mob-art-calendar.jpeg";
 import { projectList } from "./projectController.js";
 import { updateProjectToStorage } from "./localStorage.js";
+import { showEditTaskModal } from "./mainPageController.js";
 
 // This will take the individual task from @param and create a list (DOM element) base on its info
 function displayTask(task) {
@@ -13,7 +15,7 @@ function displayTask(task) {
 	const taskInnerTopContainer = createElement("div", "task-top-container");
 	const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
 	const taskInnerRightContainer = createElement("div", "task-inner-right-container");
-	const taskDescrContainer = createElement("div", "task-descr-container");
+	const taskBottomContainer = createElement("div", "task-bottom-container");
 
 	// Create round checkbox
 	const roundCheckbox = createRoundCheckbox();
@@ -24,36 +26,40 @@ function displayTask(task) {
 	taskTitle.textContent = task.title;
 	taskInnerLeftContainer.appendChild(taskTitle);
 
-	// DESCRIPTION
-	const taskDescription = createElement("p", "task-description");
-	if (task.description) {
-		taskDescription.textContent = task.description;
-		taskDescrContainer.appendChild(taskDescription);
-	}
-
 	// PRIORITY
 	const taskFlagImg = createElement("img", "priority-flag");
 	const taskPriority = task.priority;
 	createFlagBaseOnPriority(taskFlagImg, taskPriority);
 	taskInnerRightContainer.appendChild(taskFlagImg); //add the final chosen priority flag
 
-	// DUE DATE
-	const taskDate = createElement("p", "task-date");
-	if (task.date) {
-		const formattedDate = formatDate(task.date);
-		taskDate.textContent = formattedDate;
-		taskInnerRightContainer.appendChild(taskDate);
-	}
+	// Create a edit icon
+	const editBtn = createEditBtn(task);
+	taskInnerRightContainer.appendChild(editBtn);
 
 	// Create a trash button
 	const trashBtn = createTrashBtn(task);
 	taskInnerRightContainer.appendChild(trashBtn);
 
+	// DUE DATE
+	const taskDate = createElement("p", "task-date");
+	if (task.date) {
+		const formattedDate = formatDate(task.date);
+		taskDate.textContent = formattedDate;
+		taskBottomContainer.appendChild(taskDate);
+	}
+
+	// DESCRIPTION
+	const taskDescription = createElement("p", "task-description");
+	if (task.description) {
+		taskDescription.textContent = task.description;
+		taskBottomContainer.appendChild(taskDescription);
+	}
+
 	// Adding final compiled task to taskList!
 	taskInnerTopContainer.appendChild(taskInnerLeftContainer);
 	taskInnerTopContainer.appendChild(taskInnerRightContainer);
 	taskInfoContainer.appendChild(taskInnerTopContainer);
-	taskInfoContainer.appendChild(taskDescrContainer);
+	taskInfoContainer.appendChild(taskBottomContainer);
 	taskList.appendChild(taskInfoContainer);
 
 	// Attach listener to checkbox to have strikethrough on title and descr when active
@@ -64,46 +70,46 @@ function displayTask(task) {
 /**
  * This checks if the taskList is empty (For main tabs).
  * If so, we display a friendly "horray!" msg
- */ 
+ */
 function checkTaskListEmpty() {
-   if(inMainTab) {
-      if (!taskList.hasChildNodes()) {
-         const horrayMessage = createElement("div", "horrayMessage");
-         const text1 = createElement("p", 'text1');
-         const text2 = createElement("p", 'text2');
-         const img = createElement("img", 'mob-pyscho-calendar');
+	if (inMainTab) {
+		if (!taskList.hasChildNodes()) {
+			const horrayMessage = createElement("div", "horrayMessage");
+			const text1 = createElement("p", "text1");
+			const text2 = createElement("p", "text2");
+			const img = createElement("img", "mob-pyscho-calendar");
 
-         text1.textContent = 'HORRAY!'
-         text2.textContent = 'No tasks to do :)'
-         img.src = mobPyschoImg;
+			text1.textContent = "HORRAY!";
+			text2.textContent = "No tasks to do :)";
+			img.src = mobPyschoImg;
 
-         horrayMessage.appendChild(text1);
-         horrayMessage.appendChild(text2);
-         horrayMessage.appendChild(img);
-         taskList.appendChild(horrayMessage);
-      }
-   }
+			horrayMessage.appendChild(text1);
+			horrayMessage.appendChild(text2);
+			horrayMessage.appendChild(img);
+			taskList.appendChild(horrayMessage);
+		}
+	}
 }
 
 function removeTaskFromProject(task) {
 	const projectWithTask = projectList.find((project) => project.getTasks().includes(task));
 	// Remove the task from the project's task list (Stored Info)
 
-		const taskIndex = projectWithTask.getTasks().indexOf(task);
-		if (taskIndex !== -1) {
-			projectWithTask.getTasks().splice(taskIndex, 1);
+	const taskIndex = projectWithTask.getTasks().indexOf(task);
+	if (taskIndex !== -1) {
+		projectWithTask.getTasks().splice(taskIndex, 1);
 
-			// Find the task element with the specified title and remove it from the current task list (DOM)
-			const taskElements = document.querySelectorAll(".task-info-container");
-			taskElements.forEach((taskElement) => {
-				const titleElement = taskElement.querySelector(".task-title");
-				if (titleElement.textContent === task.title) {
-					taskElement.remove();
-				}
-			});
-		}
-		updateProjectToStorage();
-      checkTaskListEmpty()
+		// Find the task element with the specified title and remove it from the current task list (DOM)
+		const taskElements = document.querySelectorAll(".task-info-container");
+		taskElements.forEach((taskElement) => {
+			const titleElement = taskElement.querySelector(".task-title");
+			if (titleElement.textContent === task.title) {
+				taskElement.remove();
+			}
+		});
+	}
+	updateProjectToStorage();
+	checkTaskListEmpty();
 }
 
 function createTrashBtn(task) {
@@ -115,6 +121,16 @@ function createTrashBtn(task) {
 	// Attach event listener to the trash button
 	trashButton.addEventListener("click", () => removeTaskFromProject(task));
 	return trashButton;
+}
+
+function createEditBtn(task) {
+	const editBtn = document.createElement("img");
+	editBtn.src = editIcon;
+	editBtn.classList.add("edit-button");
+
+	// Attach event listener to the edit button
+	editBtn.addEventListener("click", () => showEditTaskModal(task));
+	return editBtn;
 }
 
 function createFlagBaseOnPriority(flagImg, priorityInfo) {
@@ -164,7 +180,7 @@ const checkboxListener = function (checkboxInput, taskContainer, task) {
 		task.status = true;
 		taskContainer.classList.add("taskComplete");
 	} else {
-		task.status =false;
+		task.status = false;
 		taskContainer.classList.remove("taskComplete");
 	}
 	updateProjectToStorage();
@@ -193,7 +209,7 @@ function updateCheckboxStatus(roundCheckboxContainer, taskContainer, task) {
 	const status = task.status;
 	const checkboxInput = roundCheckboxContainer.querySelector("input");
 
-	console.log(status)
+	console.log(status);
 	if (status) {
 		checkboxInput.checked = true;
 		taskContainer.classList.add("taskComplete");

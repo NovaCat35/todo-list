@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Bagel+Fat+One&family=Beth+Ellen&family=Bona+Nova&family=Cabin+Sketch:wght@400;700&family=Courier+Prime&family=Crimson+Text&family=Dancing+Script:wght@400;700&family=Ewert&family=Fasthand&family=Fredericka+the+Great&family=Just+Another+Hand&family=Libre+Baskerville&family=Lily+Script+One&family=Lora&family=Merriweather:wght@400;900&family=Monoton&family=Playfair+Display:wght@400;500&family=Quicksand&family=Raleway&family=Righteous&family=Rubik+Pixels&family=Special+Elite&family=Work+Sans:wght@300;400&display=swap");
 :root {
 	--nav-bar-background: rgb(237, 237, 236);
 	--top-nav-background: rgb(226, 106, 82);
@@ -37,7 +38,7 @@ header {
 h1 {
 	margin: 0;
 }
-img#todo-icon{
+img#todo-icon {
 	display: none;
 	width: 50px;
 }
@@ -167,7 +168,7 @@ main .side-nav.active {
 .navtab:focus,
 .navtab:hover,
 .navtab.active {
-	outline: 2px solid var(--nav-tab-active-color); 
+	outline: 2px solid var(--nav-tab-active-color);
 }
 
 /* Project SideNav  */
@@ -264,7 +265,7 @@ main .main-content {
 	gap: 3px;
 	position: relative;
 	left: 50%;
-	top:50%;
+	top: 50%;
 	transform: translate(-50%, -50%);
 	margin-top: -5px;
 }
@@ -281,7 +282,6 @@ main .main-content {
 	width: 80vw;
 	border-radius: 50%;
 }
-
 
 /* ********************** */
 /*** FOOTER ***/
@@ -309,7 +309,7 @@ footer img:hover {
 		gap: 30px;
 		padding: 15px 20px;
 	}
-	img#todo-icon{
+	img#todo-icon {
 		display: block;
 		margin-right: -15px;
 	}

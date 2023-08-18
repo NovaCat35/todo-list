@@ -82,11 +82,29 @@ function addTaskClickHandler() {
 	removeAddTaskBtn();
 }
 
-// Opens up the main task modal
+// Opens up the main task modal (for new tasks)
 function showTaskModal(targetProjectName) {
 	const taskModal = document.querySelector(".task-modal-container");
 	taskModal.classList.remove("hidden");
 	handleModalRequest("addTask", targetProjectName);
+}
+
+// Opens up the main task modal (for editing tasks)
+function showEditTaskModal(taskInfo) {
+	const taskModal = document.querySelector(".task-modal-container");
+	taskModal.classList.remove("hidden");
+
+	const targetProject = findProjectContainingTask(taskInfo); // Find the project containing the task
+	handleModalRequest("editTask", targetProject, taskInfo);
+}
+
+function findProjectContainingTask(targetTask) {
+	for (const project of projectList) {
+		const matchingTask = project.getTasks().find((task) => task.title === targetTask.title);
+		if (matchingTask) {
+			return project;
+		}
+	}
 }
 
 function closeTaskModal() {
@@ -204,4 +222,4 @@ function setTabActive(navTab) {
 	navTab.classList.add("active");
 }
 
-export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, displayProjectBaseOnChoice, taskList, inMainTab };
+export { displayMainInfo, getProjectTask, closeTaskModal, showAddTaskBtn, displayProjectBaseOnChoice, showEditTaskModal, taskList, inMainTab };
