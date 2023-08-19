@@ -16,6 +16,7 @@ function displayTask(task) {
 	const taskInnerLeftContainer = createElement("div", "task-inner-left-container");
 	const taskInnerRightContainer = createElement("div", "task-inner-right-container");
 	const taskBottomContainer = createElement("div", "task-bottom-container");
+	taskInfoContainer.setAttribute('data-task-title', task.title)
 
 	// Create round checkbox
 	const roundCheckbox = createRoundCheckbox();
