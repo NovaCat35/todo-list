@@ -27,7 +27,6 @@ let selectedDate = null;
 let editMode = false;
 let originalTaskInfoCopy = null;
 
-
 // ************** PROJECT MODAL **************
 // modalElement being the modalProjectContainer or the modalTaskContain
 function handleModalRequest(modalType, projectId = null, taskInfo = null) {
@@ -48,6 +47,7 @@ function handleModalRequest(modalType, projectId = null, taskInfo = null) {
 			break;
 		case "editTask":
 			editTaskModalHandler(taskInfo);
+			break;
 		default:
 			break;
 	}
@@ -152,12 +152,16 @@ function clearProjectModal() {
 
 // ***********************************************************************
 // ************** TASK MODAL INFO **************
-// Function to create event listeners with the current targetProjectName
+let newTaskEventListeners = createEventListenersForNewTask();
+let editTaskEventListeners = createEventListenersForEditTask();
+
+// Function to create event listeners that will handle the different elements of the add task modal
 function createEventListenersForNewTask() {
 	function submitHandler(event) {
 		event.preventDefault();
 		if (taskForm.checkValidity()) {
 			createTaskToProject();
+			removeListenerCallForNewTask();
 		}
 	}
 
@@ -165,6 +169,7 @@ function createEventListenersForNewTask() {
 		if (taskForm.checkValidity()) {
 			errorText.style.display = "none"; // Hide error message
 			createTaskToProject();
+			removeListenerCallForNewTask();
 		} else {
 			errorText.style.display = "block"; // Show error message
 		}
@@ -204,16 +209,84 @@ function createEventListenersForNewTask() {
 		dateHandler,
 	};
 }
+// Function to create event listeners that will handle the different elements of the edit task modal
+function createEventListenersForEditTask() {
+	function submitHandler2(event, originalTaskInfoCopy) {
+		event.preventDefault();
+		if (taskForm.checkValidity()) {
+			editTaskInProject(originalTaskInfoCopy);
+			removeListenerCallForEditTask();
+		}
+	}
 
+	function submitMobileHandler2(originalTaskInfoCopy) {
+		if (taskForm.checkValidity()) {
+			errorText.style.display = "none"; // Hide error message
+			editTaskInProject(originalTaskInfoCopy);
+			removeListenerCallForEditTask();
+		} else {
+			errorText.style.display = "block"; // Show error message
+		}
+	}
+
+	function cancelHandler() {
+		closeTaskModal();
+	}
+
+	function priorityHandler(event) {
+		selectedPriority = event.target.closest("[data-priority]").getAttribute("data-priority");
+		createFlagBaseOnPriority(flagSrc, selectedPriority);
+		priorityBtnTag.textContent = priorityType(selectedPriority);
+		priorityDropdown.classList.remove("active");
+		event.stopPropagation(); // Stop event propagation to parent (i.e. priorityDropdown since it has its own listener)
+	}
+
+	let listenerOnDatepicker = false;
+	function dateHandler() {
+		dateInput.showPicker(); //shows the input's dropdown calendar picker
+		if (!listenerOnDatepicker) {
+			dateInput.addEventListener("input", () => {
+				selectedDate = dateInput.value;
+				const formattedDate = formatDate(selectedDate);
+				dueDateTag.textContent = formattedDate;
+				listenerOnDatepicker = true;
+			});
+		}
+	}
+
+	return {
+		submitHandler2,
+		submitMobileHandler2,
+		cancelHandler,
+		priorityHandler,
+		dateHandler,
+	};
+}
+
+// Remove event listeners to avoid conflicts when we recall task modal
 function removeListenerCallForNewTask() {
-	const eventListeners = createEventListenersForNewTask();
-	taskForm.removeEventListener("submit", eventListeners.submitHandler);
-	addTaskBtnMobile.removeEventListener("click", eventListeners.submitMobileHandler);
-	cancelTaskBtn.forEach((taskBtn) => taskBtn.removeEventListener("click", eventListeners.cancelHandler));
+	taskForm.removeEventListener("submit", newTaskEventListeners.submitHandler);
+	addTaskBtnMobile.removeEventListener("click", newTaskEventListeners.submitMobileHandler);
+	cancelTaskBtn.forEach((taskBtn) => taskBtn.removeEventListener("click", newTaskEventListeners.cancelHandler));
 	priorityDropdownItems.forEach((priority) => {
-		priority.removeEventListener("click", eventListeners.priorityHandler);
+		priority.removeEventListener("click", newTaskEventListeners.priorityHandler);
 	});
-	dueDateBtn.removeEventListener("click", eventListeners.dateHandler);
+	dueDateBtn.removeEventListener("click", newTaskEventListeners.dateHandler);
+}
+// Remove event listeners to avoid conflicts when we reload modal for the editTask
+function removeListenerCallForEditTask() {
+	const editEventListeners = editTaskEventListeners; // Use the stored instance
+	const submitHandlerFunction = (event) => editEventListeners.submitHandler2(event, originalTaskInfoCopy);
+	const submitMobileHandlerFunction = () => editEventListeners.submitMobileHandler2(originalTaskInfoCopy);
+	const cancelHandlerFunction = () => editEventListeners.cancelHandler();
+
+	taskForm.removeEventListener("submit", submitHandlerFunction);
+	addTaskBtnMobile.removeEventListener("click", submitMobileHandlerFunction);
+	cancelTaskBtn.forEach((taskBtn) => taskBtn.removeEventListener("click", cancelHandlerFunction));
+	priorityDropdownItems.forEach((priority) => {
+		priority.removeEventListener("click", editEventListeners.priorityHandler);
+	});
+	dueDateBtn.removeEventListener("click", editEventListeners.dateHandler);
 }
 
 /**
@@ -221,11 +294,13 @@ function removeListenerCallForNewTask() {
  */
 function addTaskModalHandler() {
 	addListenerToOpenClosePriority();
+
 	// Remove the event listeners if they exist
 	removeListenerCallForNewTask();
+	removeListenerCallForEditTask();
 
 	// Add the event listeners with the updated targetProjectName
-	const newEventListeners = createEventListenersForNewTask();
+	const newEventListeners = newTaskEventListeners; // Use the stored instance
 	taskForm.addEventListener("submit", newEventListeners.submitHandler);
 	addTaskBtnMobile.addEventListener("click", newEventListeners.submitMobileHandler);
 	cancelTaskBtn.forEach((taskBtn) => taskBtn.addEventListener("click", newEventListeners.cancelHandler));
@@ -238,48 +313,8 @@ function addTaskModalHandler() {
 /**
  * EDIT-TASK MODAL LOGIC BELOW
  */
-function createEventListenersForEditTask() {
-	function submitHandler(event, originalTaskInfoCopy) {
-		event.preventDefault();
-		if (taskForm.checkValidity()) {
-			editTaskInProject(originalTaskInfoCopy);
-		}
-	}
-
-	function submitMobileHandler(taskInfo) {
-		if (taskForm.checkValidity()) {
-			errorText.style.display = "none"; // Hide error message
-			editTaskInProject(originalTaskInfoCopy);
-		} else {
-			errorText.style.display = "block"; // Show error message
-		}
-	}
-
-	function cancelHandler() {
-		closeTaskModal();
-	}
-
-	return {
-		submitHandler,
-		submitMobileHandler,
-		cancelHandler,
-	};
-}
-
-function removeListenerCallForEditTask() {
-	// Remove event listeners to avoid conflicts when we reload up the editTask
-	const editEventListeners = createEventListenersForEditTask();
-	const submitHandlerFunction = (event) => editEventListeners.submitHandler(event, originalTaskInfoCopy);
-	const submitMobileHandlerFunction = () => editEventListeners.submitMobileHandler(originalTaskInfoCopy);
-	const cancelHandlerFunction = () => editEventListeners.cancelHandler();
-
-	taskForm.removeEventListener("submit", submitHandlerFunction);
-	addTaskBtnMobile.removeEventListener("click", submitMobileHandlerFunction);
-	cancelTaskBtn.forEach((taskBtn) => taskBtn.removeEventListener("click", cancelHandlerFunction));
-}
-
 function editTaskModalHandler(taskInfo) {
-	addListenerToOpenClosePriority();
+	// addListenerToOpenClosePriority();
 	populateOriginalModal(taskInfo);
 
 	// Remove the event listeners from the original created Modal to avoid conflicts
@@ -287,46 +322,39 @@ function editTaskModalHandler(taskInfo) {
 	removeListenerCallForEditTask();
 
 	// eventListener specific for editing task modal
-	const editEventListeners = createEventListenersForEditTask();
-	const submitHandlerFunction = (event) => editEventListeners.submitHandler(event, originalTaskInfoCopy);
-	const submitMobileHandlerFunction = () => editEventListeners.submitMobileHandler(originalTaskInfoCopy);
+	const editEventListeners = editTaskEventListeners; // Use the stored instance
+	const submitHandlerFunction = (event) => editEventListeners.submitHandler2(event, originalTaskInfoCopy);
+	const submitMobileHandlerFunction = () => editEventListeners.submitMobileHandler2(originalTaskInfoCopy);
 	const cancelHandlerFunction = () => editEventListeners.cancelHandler();
 	taskForm.addEventListener("submit", submitHandlerFunction);
 	addTaskBtnMobile.addEventListener("click", submitMobileHandlerFunction);
 	cancelTaskBtn.forEach((taskBtn) => taskBtn.addEventListener("click", cancelHandlerFunction));
-
-	// eventListeners same functionality as with add new task modal
-	const newEventListeners = createEventListenersForNewTask();
 	priorityDropdownItems.forEach((priority) => {
-		priority.addEventListener("click", newEventListeners.priorityHandler);
+		priority.addEventListener("click", editEventListeners.priorityHandler);
 	});
-	dueDateBtn.addEventListener("click", newEventListeners.dateHandler);
+	dueDateBtn.addEventListener("click", editEventListeners.dateHandler);
 }
 
-// This repopulates the modal DOM with the already created task info
-function populateOriginalModal(taskInfo) {
-	originalTaskInfoCopy = JSON.parse(JSON.stringify(taskInfo)); // Create a deep copy of taskInfo
-	document.getElementById("task-name").value = taskInfo.title;
-
-	if (taskInfo.description) {
-		document.getElementById("task-description").value = taskInfo.description;
-	}
-
-	if (taskInfo.date) {
-		const formattedDate = formatDate(taskInfo.date);
-		dueDateTag.textContent = formattedDate;
-	}
-
-	const savedPriority = taskInfo.priority;
-	createFlagBaseOnPriority(flagSrc, savedPriority);
-	priorityBtnTag.textContent = priorityType(savedPriority);
-}
-
+// ***********************************************************
+// ***********************************************************
+// GET THE INFO FROM THE MODAL -> UPDATE LIST & DOM
 function editTaskInProject(originalTaskInfo) {
+	selectedDate = dateInput.value;
+	selectedPriority = (() => {
+		const domPriorityInfo = `${document.querySelector(".priority-container p").textContent.toLowerCase()}-priority`;
+		console.log(`YO ${domPriorityInfo}`);
+		if (domPriorityInfo == "priority-priority") {
+			return null;
+		} else {
+			return domPriorityInfo;
+		}
+	})();
+
 	// Get the inputted values
 	const editedTitle = document.getElementById("task-name").value;
 	const editedDescription = document.getElementById("task-description").value;
 	const editedDueDate = selectedDate;
+	console.log(`editedDueDate: ${editedDueDate}`);
 	const editedPriority = selectedPriority;
 
 	// Find the target project
@@ -363,7 +391,7 @@ function editTaskInProject(originalTaskInfo) {
 		if (editedDescription !== null) {
 			taskContainer.querySelector(".task-description").textContent = editedDescription;
 		}
-		if (editedDueDate !== null) {
+		if (editedDueDate !== null && editedDueDate !== "") {
 			const taskDateTag = taskContainer.querySelector(".task-date");
 			taskDateTag.textContent = formatDate(selectedDate);
 		}
@@ -378,16 +406,20 @@ function editTaskInProject(originalTaskInfo) {
 	// Update project list and local storage
 	updateProjectToStorage();
 }
-// ***********************************************************
-// ***********************************************************
-
-// Execution of modalHandler's request to add the filled out information here
+// GET THE INFO FROM THE MODAL -> UPDATE LIST & DOM
 function createTaskToProject() {
+	console.log(projectList[0]);
+	console.log(targetProjectName);
 	const targetProjectInfo = projectList.find((project) => project.title == targetProjectName);
 	const taskTitle = document.getElementById("task-name").value;
 	const taskDescription = document.getElementById("task-description").value;
 	const taskDueDate = selectedDate;
 	const taskPriority = selectedPriority;
+
+	if (taskDueDate === "") {
+		selectedDate = null; // Reset selectedDate to null if no new date was input
+	}
+
 	targetProjectInfo.setTask(taskTitle, taskDescription, taskPriority, taskDueDate);
 
 	// Update the task that shows up in main page
@@ -409,11 +441,32 @@ function addListenerToOpenClosePriority() {
 	}
 }
 
+// This repopulates the modal DOM with the already created task info
+function populateOriginalModal(taskInfo) {
+	originalTaskInfoCopy = JSON.parse(JSON.stringify(taskInfo)); // Create a deep copy of taskInfo
+	document.getElementById("task-name").value = taskInfo.title;
+
+	if (taskInfo.description) {
+		document.getElementById("task-description").value = taskInfo.description;
+	}
+
+	if (taskInfo.date) {
+		const formattedDate = formatDate(taskInfo.date);
+		dueDateTag.textContent = formattedDate;
+		dateInput.value = taskInfo.date;
+	}
+
+	const savedPriority = taskInfo.priority;
+	createFlagBaseOnPriority(flagSrc, savedPriority);
+	priorityBtnTag.textContent = priorityType(savedPriority);
+}
+
 function resetModal(projectId) {
 	errorText.style.display = "none"; // Hide error message
 	targetProjectName = projectId;
 	selectedPriority = null;
 	selectedDate = null;
+	dateInput.value = '';
 
 	const taskDescr = document.getElementById("task-description");
 	if (taskDescr != null) {

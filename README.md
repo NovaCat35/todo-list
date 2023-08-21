@@ -1,17 +1,9 @@
 # todo-list
-
+Got a desire to keep track of 
+Have you ever had any troubles keeping track of what you need to do in your life? Do you serve ZERO PURPOSE??? Well fear not, I have the perfect solution for you. With this Todo-list, you can keep track of what YOU yourself need to do. It's simple and well worth your time. This Todo-list is fully customizable and fits every want and need. :)
 
 ## Challenges
-The constant addEventlisteners being called by different files that relies on other function and recreating the sameEventListeners was something that didn't catch my attention and cause a lot of frustrations with organizing everything in its own functions and module. This is the first time I had to think about the overall structure of my file instead of lumping everything in one. This project taught me how to organize better with foresight into planning and being aware of calling eventListeners functions.
-
-Making custom date buttons and priority dropdowns
-
-
-Set sidenav to close on project select & have better close transition, Search engine responsive
-
-global variables and event listeners calls cause me a headache, learn to remove and separate call logic and use global variable less if possible
-
-Learning to better manage states of element eventListener behaviors
+One of the biggest struggle of this project was dealing with event listeners. Dealing with adding and removing event listeners that is constantly being called by different files that relies on other function cause a lot of frustrations as the code grew more extensive.I learn the importance with organizing everything in its own functions and module and planning ahead. This project also taught me how to organize unique elements that are created better for future projects as I watch out to avoid similar mistakes.
 
 ## Build With
 - HTML
