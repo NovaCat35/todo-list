@@ -314,7 +314,7 @@ function addTaskModalHandler() {
  * EDIT-TASK MODAL LOGIC BELOW
  */
 function editTaskModalHandler(taskInfo) {
-	// addListenerToOpenClosePriority();
+	addListenerToOpenClosePriority();
 	populateOriginalModal(taskInfo);
 
 	// Remove the event listeners from the original created Modal to avoid conflicts
@@ -430,15 +430,14 @@ function createTaskToProject() {
 	showAddTaskBtn();
 }
 
-// We call the below function to be invoked immediately so we have one listener at all time for the priority dropdown
-let priorityListenerAdded = false;
+// We have one listener at all time for the priority dropdown, so we have a checker below to stop new listeners as we open and close
 function addListenerToOpenClosePriority() {
-	if (!priorityListenerAdded) {
-		priorityBtn.addEventListener("click", () => {
-			priorityDropdown.classList.toggle("active");
-		});
-		priorityListenerAdded = true;
-	}
+	const togglePriorityDropdown = () => {
+		priorityDropdown.classList.toggle("active");
+		priorityBtn.removeEventListener("click", togglePriorityDropdown);
+	};
+
+	priorityBtn.addEventListener("click", togglePriorityDropdown);
 }
 
 // This repopulates the modal DOM with the already created task info
@@ -466,7 +465,7 @@ function resetModal(projectId) {
 	targetProjectName = projectId;
 	selectedPriority = null;
 	selectedDate = null;
-	dateInput.value = '';
+	dateInput.value = "";
 
 	const taskDescr = document.getElementById("task-description");
 	if (taskDescr != null) {
