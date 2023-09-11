@@ -5,6 +5,11 @@
 	--footer-background: rgb(219, 219, 219);
 	--nav-tab-active-color: rgb(238, 156, 54);
 	--nav-tab-hover-color: rgb(238, 88, 54);
+	--header-font: 'Lora', serif;
+	--main-fonts: 'Libre Baskerville', serif;
+	--horray-font: 'Bona Nova', serif;
+	--special-font: 'Special Elite', cursive;
+	--sans-font: 'Quicksand', sans-serif;
 }
 * {
 	box-sizing: border-box;
@@ -37,6 +42,7 @@ header {
 }
 h1 {
 	margin: 0;
+	font-family: var(--header-font);
 }
 img#todo-icon {
 	display: none;
@@ -145,6 +151,7 @@ main .side-nav {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	font-family: var(--special-font);
 	background-color: var(--nav-bar-background);
 	width: 0;
 	overflow-y: auto;
@@ -178,6 +185,7 @@ main .side-nav.active {
 	justify-content: center;
 	gap: 10px;
 	width: 100%;
+	font-family: var(--special-font);
 }
 .project-container {
 	width: 100%;
@@ -201,6 +209,7 @@ main .side-nav.active {
 	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
+	font-family: var(--sans-font);
 	align-items: center;
 	font-size: 1.2rem;
 	border: 1px solid rgb(138, 138, 138);
@@ -237,6 +246,9 @@ main .main-content {
 	background-color: rgb(255, 255, 255);
 	overflow-y: auto;
 }
+main .main-title {
+	font-family: var(--special-font);
+}
 .taskInfoHeader {
 	width: 100%;
 	height: 30px;
@@ -272,9 +284,11 @@ main .main-content {
 .horrayMessage .text1 {
 	font-size: 2rem;
 	margin: 0;
+	font-family: var(--sans-font);
 }
 .horrayMessage .text2 {
 	font-size: 1rem;
+	font-family: var(--sans-font);
 	margin: 0;
 	margin-bottom: 5px;
 }
